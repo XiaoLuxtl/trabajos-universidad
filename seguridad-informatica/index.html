@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mapa Conceptual · Fundamentos de la Seguridad Informática</title>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js?v=3"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #fafafa; color: #1f2937; }
@@ -66,55 +66,77 @@
     <div class="hsub">Vista radial. De lo general (centro) a lo específico (extremos). Cada rama usa un color pastel distinto.</div>
     <div class="mermaid">
 mindmap
-  classDef root fill:#818cf8,color:#fff,stroke:#4f46e5,stroke-width:3px
-  classDef prinB fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5,stroke-width:2px
-  classDef prinC fill:#D4E4F4,color:#1e3a5f,stroke:#A7C7E7
-  classDef ameB fill:#F4A6A6,color:#7d2c2c,stroke:#C77575,stroke-width:2px
-  classDef ameC fill:#FBD5D5,color:#7d2c2c,stroke:#F4A6A6
-  classDef autB fill:#A8D5BA,color:#1e5e3a,stroke:#75B491,stroke-width:2px
-  classDef autC fill:#D4ECDD,color:#1e5e3a,stroke:#A8D5BA
-  classDef preB fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C,stroke-width:2px
-  classDef preC fill:#FBEAC4,color:#7d5c1a,stroke:#F5D78E
+  Seguridad Informatica
+    Principios
+      Triada CIA
+        Confidencialidad
+        Integridad
+        Disponibilidad
+    Amenazas
+      Malware
+        Virus
+        Ransomware
+        Troyanos
+      Phishing
+      Ingenieria Social
+      Fuerza Bruta
+      Man in the Middle
+    Autenticacion
+      Factor Conocimiento
+        Contrasena
+        PIN
+      Factor Posesion
+        Token
+        Tarjeta Inteligente
+      Factor Biometrico
+        Huella Digital
+        Reconocimiento Facial
+      Multifactor MFA
+    Mecanismos Preventivos
+      Cifrado
+      Firewalls
+      Antivirus y EDR
+      Control de Acceso
+      Gestion de Parches
+      Copias de Seguridad
+      Politicas de Seguridad
+      Concienciacion del Usuario
 
-  ((Seguridad Informatica)):::root
-
-    Principios:::prinB
-      Triada CIA:::prinC
-        Confidencialidad:::prinC
-        Integridad:::prinC
-        Disponibilidad:::prinC
-
-    Amenazas:::ameB
-      Malware:::ameC
-        Virus:::ameC
-        Ransomware:::ameC
-        Troyanos:::ameC
-      Phishing:::ameC
-      Ingenieria Social:::ameC
-      Fuerza Bruta:::ameC
-      Man in the Middle:::ameC
-
-    Autenticacion:::autB
-      Factor Conocimiento:::autC
-        Contrasena:::autC
-        PIN:::autC
-      Factor Posesion:::autC
-        Token:::autC
-        Tarjeta Inteligente:::autC
-      Factor Biometrico:::autC
-        Huella Digital:::autC
-        Reconocimiento Facial:::autC
-      Multifactor MFA:::autC
-
-    Mecanismos Preventivos:::preB
-      Cifrado:::preC
-      Firewalls:::preC
-      Antivirus y EDR:::preC
-      Control de Acceso:::preC
-      Gestion de Parches:::preC
-      Copias de Seguridad:::preC
-      Politicas de Seguridad:::preC
-      Concienciacion del Usuario:::preC
+  style Seguridad Informatica fill:#818cf8,color:#fff,stroke:#4f46e5
+  style Principios fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5
+  style Triada CIA fill:#D4E4F4,color:#1e3a5f
+  style Confidencialidad fill:#D4E4F4,color:#1e3a5f
+  style Integridad fill:#D4E4F4,color:#1e3a5f
+  style Disponibilidad fill:#D4E4F4,color:#1e3a5f
+  style Amenazas fill:#F4A6A6,color:#7d2c2c,stroke:#C77575
+  style Malware fill:#FBD5D5,color:#7d2c2c
+  style Virus fill:#FBD5D5,color:#7d2c2c
+  style Ransomware fill:#FBD5D5,color:#7d2c2c
+  style Troyanos fill:#FBD5D5,color:#7d2c2c
+  style Phishing fill:#FBD5D5,color:#7d2c2c
+  style Ingenieria Social fill:#FBD5D5,color:#7d2c2c
+  style Fuerza Bruta fill:#FBD5D5,color:#7d2c2c
+  style Man in the Middle fill:#FBD5D5,color:#7d2c2c
+  style Autenticacion fill:#A8D5BA,color:#1e5e3a,stroke:#75B491
+  style Factor Conocimiento fill:#D4ECDD,color:#1e5e3a
+  style Contrasena fill:#D4ECDD,color:#1e5e3a
+  style PIN fill:#D4ECDD,color:#1e5e3a
+  style Factor Posesion fill:#D4ECDD,color:#1e5e3a
+  style Token fill:#D4ECDD,color:#1e5e3a
+  style Tarjeta Inteligente fill:#D4ECDD,color:#1e5e3a
+  style Factor Biometrico fill:#D4ECDD,color:#1e5e3a
+  style Huella Digital fill:#D4ECDD,color:#1e5e3a
+  style Reconocimiento Facial fill:#D4ECDD,color:#1e5e3a
+  style Multifactor MFA fill:#D4ECDD,color:#1e5e3a
+  style Mecanismos Preventivos fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C
+  style Cifrado fill:#FBEAC4,color:#7d5c1a
+  style Firewalls fill:#FBEAC4,color:#7d5c1a
+  style Antivirus y EDR fill:#FBEAC4,color:#7d5c1a
+  style Control de Acceso fill:#FBEAC4,color:#7d5c1a
+  style Gestion de Parches fill:#FBEAC4,color:#7d5c1a
+  style Copias de Seguridad fill:#FBEAC4,color:#7d5c1a
+  style Politicas de Seguridad fill:#FBEAC4,color:#7d5c1a
+  style Concienciacion del Usuario fill:#FBEAC4,color:#7d5c1a
     </div>
     <p class="tip">Arrastra el mapa para desplazarlo si no cabe en pantalla.</p>
   </div>
@@ -125,30 +147,32 @@ mindmap
     <div class="hsub">Las cuatro ramas no son independientes: se influyen entre sí. Esta vista muestra las relaciones clave, con el mismo código de color que el mapa principal.</div>
     <div class="mermaid">
 flowchart LR
-  classDef prinNode fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5,stroke-width:2px
-  classDef ameNode fill:#F4A6A6,color:#7d2c2c,stroke:#C77575,stroke-width:2px
-  classDef autNode fill:#A8D5BA,color:#1e5e3a,stroke:#75B491,stroke-width:2px
-  classDef preNode fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C,stroke-width:2px
-  classDef ctrlNode fill:#D4ECDD,color:#1e5e3a,stroke:#A8D5BA
-  classDef malNode fill:#FBD5D5,color:#7d2c2c,stroke:#F4A6A6
-
-  P["Principios CIA"]:::prinNode
-  A["Amenazas"]:::ameNode
-  AU["Autenticacion"]:::autNode
-  MP["Mecanismos Preventivos"]:::preNode
+  P["Principios CIA"]
+  A["Amenazas"]
+  AU["Autenticacion"]
+  MP["Mecanismos Preventivos"]
+  C["Cifrado"]
+  CAP["Concienciacion"]
+  PH["Phishing"]
+  MFA["MFA"]
 
   A -->|atentan contra| P
   MP -->|mitigan| A
   AU -->|verifica identidad para| P
   MP -->|reforzan| P
-  C["Cifrado"]:::ctrlNode
   C -->|protege| P
-  CAP["Concienciacion"]:::ctrlNode
   CAP -->|reduce| A
-  PH["Phishing"]:::malNode
   CAP -->|previene| PH
-  MFA["MFA"]:::ctrlNode
   MFA -->|frena| A
+
+  style P fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5
+  style A fill:#F4A6A6,color:#7d2c2c,stroke:#C77575
+  style AU fill:#A8D5BA,color:#1e5e3a,stroke:#75B491
+  style MP fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C
+  style C fill:#D4ECDD,color:#1e5e3a
+  style CAP fill:#D4ECDD,color:#1e5e3a
+  style MFA fill:#D4ECDD,color:#1e5e3a
+  style PH fill:#FBD5D5,color:#7d2c2c
     </div>
   </div>
 
