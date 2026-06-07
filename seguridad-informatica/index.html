@@ -27,18 +27,49 @@
 
   .map-rel { min-height: 320px; }
 
+  /* =======================================================
+     CSS INYECTADO: SECUESTRO DE CLASES MERMAID MINDMAP
+     ======================================================= */
+  
+  /* Forzar líneas de conexión elegantes */
+  .mindmap-edges path { stroke-width: 1.5px !important; }
+
+  /* Raíz (Índigo) */
+  .mindmap-node.section-root rect, .mindmap-node.section-root polygon { fill: #818cf8 !important; stroke: #4338ca !important; stroke-width: 2px !important; }
+  .mindmap-node.section-root tspan { fill: #ffffff !important; font-weight: 800 !important; font-size: 16px !important; }
+
+  /* Rama 1: Principios (Azul) */
+  .mindmap-node.section-0 rect, .mindmap-node.section-0 polygon { fill: #A7C7E7 !important; stroke: #6B95C5 !important; stroke-width: 1px !important; }
+  .mindmap-node.section-0 tspan { fill: #1e3a5f !important; }
+  path.section-0 { stroke: #6B95C5 !important; }
+
+  /* Rama 2: Amenazas (Rojo) */
+  .mindmap-node.section-1 rect, .mindmap-node.section-1 polygon { fill: #F4A6A6 !important; stroke: #C77575 !important; stroke-width: 1px !important; }
+  .mindmap-node.section-1 tspan { fill: #7d2c2c !important; }
+  path.section-1 { stroke: #C77575 !important; }
+
+  /* Rama 3: Autenticación (Verde) */
+  .mindmap-node.section-2 rect, .mindmap-node.section-2 polygon { fill: #A8D5BA !important; stroke: #75B491 !important; stroke-width: 1px !important; }
+  .mindmap-node.section-2 tspan { fill: #1e5e3a !important; }
+  path.section-2 { stroke: #75B491 !important; }
+
+  /* Rama 4: Mecanismos Preventivos (Amarillo) */
+  .mindmap-node.section-3 rect, .mindmap-node.section-3 polygon { fill: #F5D78E !important; stroke: #C5A55C !important; stroke-width: 1px !important; }
+  .mindmap-node.section-3 tspan { fill: #7d5c1a !important; }
+  path.section-3 { stroke: #C5A55C !important; }
+
+  /* Leyenda de colores */
   .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #4b5563; justify-content: center; padding: 16px 20px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; margin-top: 18px; }
   .legend .item { display: flex; align-items: center; gap: 7px; }
   .legend .sw { width: 18px; height: 18px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.08); }
-  .legend .sw.root { background: #818cf8; }
-  .legend .sw.prin { background: #A7C7E7; }
-  .legend .sw.ame { background: #F4A6A6; }
-  .legend .sw.aut { background: #A8D5BA; }
-  .legend .sw.pre { background: #F5D78E; }
+  .legend .sw.root { background: #818cf8; border-color: #4338ca; }
+  .legend .sw.prin { background: #A7C7E7; border-color: #6B95C5; }
+  .legend .sw.ame { background: #F4A6A6; border-color: #C77575; }
+  .legend .sw.aut { background: #A8D5BA; border-color: #75B491; }
+  .legend .sw.pre { background: #F5D78E; border-color: #C5A55C; }
   .legend .ln { display: inline-block; min-width: 24px; height: 0; border-top: 2px solid #6366f1; }
 
   .tip { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 10px; font-style: italic; }
-
   footer { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 22px; }
 
   @media (max-width: 720px) {
@@ -60,64 +91,50 @@
     <p class="sub">Organización jerárquica de conceptos (mapa principal) y relaciones entre las cuatro ramas (mapa de relaciones).</p>
   </header>
 
-  <!-- MAPA PRINCIPAL: MINDMAP (radial, espacioso) -->
   <div class="card map-main">
     <h2>Mapa principal · Jerarquía de conceptos</h2>
     <div class="hsub">Vista radial. De lo general (centro) a lo específico (extremos). Cada rama usa un color pastel distinto.</div>
     <div class="mermaid">
 mindmap
-  classDef rStyle fill:#818cf8,color:#fff
-  classDef pStyle fill:#A7C7E7,color:#1e3a5f
-  classDef aStyle fill:#F4A6A6,color:#7d2c2c
-  classDef auStyle fill:#A8D5BA,color:#1e5e3a
-  classDef prStyle fill:#F5D78E,color:#7d5c1a
-
-  Seguridad Informatica
-    Principios
-      Triada CIA
-        Confidencialidad
-        Integridad
-        Disponibilidad
-    Amenazas
-      Malware
-        Virus
-        Ransomware
-        Troyanos
-      Phishing
-      Ingenieria Social
-      Fuerza Bruta
-      Man in the Middle
-    Autenticacion
-      Factor Conocimiento
-        Contrasena
-        PIN
-      Factor Posesion
-        Token
-        Tarjeta Inteligente
-      Factor Biometrico
-        Huella Digital
-        Reconocimiento Facial
-      Multifactor MFA
-    Mecanismos Preventivos
-      Cifrado
-      Firewalls
-      Antivirus y EDR
-      Control de Acceso
-      Gestion de Parches
-      Copias de Seguridad
-      Politicas de Seguridad
-      Concienciacion del Usuario
-
-  class Seguridad Informatica rStyle
-  class Principios pStyle
-  class Amenazas aStyle
-  class Autenticacion auStyle
-  class Mecanismos Preventivos prStyle
+  ("Seguridad Informática")
+    ("Principios")
+      ("Tríada CIA")
+        ("Confidencialidad")
+        ("Integridad")
+        ("Disponibilidad")
+    ("Amenazas")
+      ("Malware")
+        ("Virus")
+        ("Ransomware")
+        ("Troyanos")
+      ("Phishing")
+      ("Ingeniería Social")
+      ("Fuerza Bruta")
+      ("Man in the Middle")
+    ("Autenticación")
+      ("Factor Conocimiento")
+        ("Contraseña")
+        ("PIN")
+      ("Factor Posesión")
+        ("Token")
+        ("Tarjeta Inteligente")
+      ("Factor Biométrico")
+        ("Huella Digital")
+        ("Reconocimiento Facial")
+      ("Multifactor MFA")
+    ("Mecanismos Preventivos")
+      ("Cifrado")
+      ("Firewalls")
+      ("Antivirus y EDR")
+      ("Control de Acceso")
+      ("Gestión de Parches")
+      ("Copias de Seguridad")
+      ("Políticas de Seguridad")
+      ("Concienciación del Usuario")
     </div>
     <p class="tip">Arrastra el mapa para desplazarlo si no cabe en pantalla.</p>
   </div>
 
-  <!-- MAPA DE RELACIONES: solo las conexiones cruzadas -->
   <div class="card map-rel">
     <h2>Mapa de relaciones · Cómo se conectan las ramas</h2>
     <div class="hsub">Las cuatro ramas no son independientes: se influyen entre sí. Esta vista muestra las relaciones clave, con el mismo código de color que el mapa principal.</div>
@@ -125,10 +142,10 @@ mindmap
 flowchart LR
   P["Principios CIA"]
   A["Amenazas"]
-  AU["Autenticacion"]
+  AU["Autenticación"]
   MP["Mecanismos Preventivos"]
   C["Cifrado"]
-  CAP["Concienciacion"]
+  CAP["Concienciación"]
   PH["Phishing"]
   MFA["MFA"]
 
@@ -141,14 +158,16 @@ flowchart LR
   CAP -->|previene| PH
   MFA -->|frena| A
 
-  style P fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5
-  style A fill:#F4A6A6,color:#7d2c2c,stroke:#C77575
-  style AU fill:#A8D5BA,color:#1e5e3a,stroke:#75B491
-  style MP fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C
-  style C fill:#D4ECDD,color:#1e5e3a
-  style CAP fill:#D4ECDD,color:#1e5e3a
-  style MFA fill:#D4ECDD,color:#1e5e3a
-  style PH fill:#FBD5D5,color:#7d2c2c
+  style P fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5,stroke-width:1px
+  style A fill:#F4A6A6,color:#7d2c2c,stroke:#C77575,stroke-width:1px
+  style AU fill:#A8D5BA,color:#1e5e3a,stroke:#75B491,stroke-width:1px
+  style MP fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C,stroke-width:1px
+  style C fill:#D4ECDD,color:#1e5e3a,stroke:#75B491,stroke-dasharray: 4 4
+  style CAP fill:#D4ECDD,color:#1e5e3a,stroke:#75B491,stroke-dasharray: 4 4
+  style MFA fill:#D4ECDD,color:#1e5e3a,stroke:#75B491,stroke-dasharray: 4 4
+  style PH fill:#FBD5D5,color:#7d2c2c,stroke:#C77575,stroke-dasharray: 4 4
+
+  linkStyle default stroke-width:1.5px,stroke:#94a3b8,fill:none
     </div>
   </div>
 
@@ -174,14 +193,7 @@ flowchart LR
     },
     flowchart: { curve: 'basis', padding: 14, htmlLabels: true, useMaxWidth: true },
     themeVariables: {
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      fontSize: '14px',
-      primaryColor: '#D4E4F4',
-      primaryTextColor: '#1e3a5f',
-      primaryBorderColor: '#A7C7E7',
-      lineColor: '#94a3b8',
-      secondaryColor: '#FBEAC4',
-      tertiaryColor: '#fff'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     },
     securityLevel: 'loose'
   });
