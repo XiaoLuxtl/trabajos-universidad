@@ -66,7 +66,7 @@
     <div class="hsub">Vista radial. De lo general (centro) a lo específico (extremos).</div>
     <div class="mermaid">
 mindmap
-  root(((Seguridad Informática)))
+  root((Seguridad Informatica))
     Principios
       Triada CIA
         Confidencialidad
@@ -78,17 +78,17 @@ mindmap
         Ransomware
         Troyanos
       Phishing
-      Ingeniería Social
+      Ingenieria Social
       Fuerza Bruta
       Man in the Middle
-    Autenticación
+    Autenticacion
       Factor Conocimiento
-        Contraseña
+        Contrasena
         PIN
-      Factor Posesión
+      Factor Posesion
         Token
         Tarjeta Inteligente
-      Factor Biométrico
+      Factor Biometrico
         Huella Digital
         Reconocimiento Facial
       Multifactor MFA
@@ -97,10 +97,10 @@ mindmap
       Firewalls
       Antivirus y EDR
       Control de Acceso
-      Gestión de Parches
+      Gestion de Parches
       Copias de Seguridad
-      Políticas de Seguridad
-      Concienciación del Usuario
+      Politicas de Seguridad
+      Concienciacion del Usuario
     </div>
     <p class="tip">Arrastra el mapa para desplazarlo si no cabe en pantalla.</p>
   </div>
@@ -117,21 +117,21 @@ flowchart LR
 
   P["Principios CIA"]:::rama
   A["Amenazas"]:::rama
-  AU["Autenticación"]:::rama
+  AU["Autenticacion"]:::rama
   MP["Mecanismos Preventivos"]:::rama
 
-  A --"atentan contra"--> P
-  MP --"mitigan"--> A
-  AU --"verifica identidad para"--> P
-  MP --"reforzan"--> P
+  A -->|atentan contra| P
+  MP -->|mitigan| A
+  AU -->|verifica identidad para| P
+  MP -->|reforzan| P
   C["Cifrado"]:::accion
-  C --"protege"--> P
-  CAP["Concienciación"]:::accion
-  CAP --"reduce"--> A
+  C -->|protege| P
+  CAP["Concienciacion"]:::accion
+  CAP -->|reduce| A
   PH["Phishing"]:::mal
-  CAP --"previene"--> PH
+  CAP -->|previene| PH
   MFA["MFA"]:::accion
-  MFA --"frena"--> A
+  MFA -->|frena| A
     </div>
   </div>
 
