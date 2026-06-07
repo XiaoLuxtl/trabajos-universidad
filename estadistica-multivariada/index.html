@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Estadística Multivariada · Menú Interactivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@600;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --paper: #ffffff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --primary: #4338ca;
+    --primary-50: #eef2ff;
+    --primary-100: #e0e7ff;
+    --primary-700: #3730a3;
+    --primary-900: #1e1b4b;
+    --accent: #f59e0b;
+    --emerald: #059669;
+    --emerald-50: #ecfdf5;
+    --coral: #dc2626;
+    --coral-50: #fef2f2;
+    --shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+  img, svg { max-width: 100%; display: block; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav.top { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav.top .row { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  nav.top .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; }
+  nav.top .brand .mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-700)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  nav.top ul { list-style: none; display: flex; gap: 4px; flex-wrap: wrap; }
+  nav.top a.link { display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--muted); }
+  nav.top a.link:hover { background: var(--primary-50); color: var(--primary-700); text-decoration: none; }
+
+  /* HERO */
+  .hero { padding: 72px 0 48px; background: radial-gradient(800px 400px at 90% 0%, var(--primary-50), transparent 60%), var(--bg); }
+  .hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary-700); background: var(--primary-50); border: 1px solid var(--primary-100); padding: 6px 12px; border-radius: 999px; }
+  .hero h1 { font-size: clamp(34px, 5vw, 56px); margin: 18px 0 14px; }
+  .hero h1 .accent { font-style: italic; background: linear-gradient(120deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lede { font-size: 17px; color: var(--muted); max-width: 680px; }
+  .hero .quick { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; font-size: 13px; color: var(--muted); }
+  .hero .quick div { display: flex; align-items: center; gap: 6px; }
+  .hero .quick i { color: var(--primary); }
+
+  /* SECTIONS */
+  section { padding: 72px 0; }
+  .section-head { max-width: 720px; margin-bottom: 36px; }
+  .section-head .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary-700); margin-bottom: 10px; }
+  .section-head h2 { font-size: clamp(26px, 3.4vw, 38px); margin-bottom: 10px; }
+  .section-head p.lead { color: var(--muted); font-size: 15px; }
+
+  /* MENU CARDS */
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .menu-card { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 26px 24px; transition: all 0.25s; position: relative; cursor: pointer; display: block; color: inherit; }
+  .menu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--primary-100); text-decoration: none; }
+  .menu-card .num { position: absolute; top: 16px; right: 20px; font-family: 'Fraunces', serif; font-size: 30px; color: var(--primary-100); font-weight: 800; }
+  .menu-card .ic { width: 44px; height: 44px; border-radius: 12px; background: var(--primary-50); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 16px; }
+  .menu-card h3 { font-size: 19px; margin-bottom: 6px; }
+  .menu-card p { font-size: 13px; color: var(--muted); }
+
+  /* TOPIC BLOCKS */
+  .topic { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 36px; margin-bottom: 24px; }
+  .topic .top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .topic .top .ic { width: 46px; height: 46px; border-radius: 12px; background: var(--primary-50); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 19px; }
+  .topic .top .num { font-family: 'Fraunces', serif; font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: 0.1em; }
+  .topic h2 { font-size: 26px; }
+  .topic .body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: start; }
+  .topic p { font-size: 14.5px; color: #1f2937; margin-bottom: 12px; }
+  .topic ul { padding-left: 18px; font-size: 14.5px; }
+  .topic li { margin-bottom: 6px; }
+  .topic li strong { color: var(--primary-700); }
+  .topic .visual { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .topic .visual h5 { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .topic .visual .chart-wrap { position: relative; height: 200px; }
+  .topic .visual .callout { margin-top: 12px; padding: 10px 12px; background: var(--primary-50); border-radius: 8px; font-size: 12.5px; color: var(--primary-700); }
+  .topic .visual .callout i { margin-right: 6px; }
+
+  /* CORRELATION HEATMAP */
+  .heatmap { display: grid; grid-template-columns: 80px repeat(4, 1fr); gap: 3px; font-size: 11px; }
+  .heatmap div { padding: 10px 6px; text-align: center; font-weight: 600; border-radius: 4px; }
+  .heatmap .h { background: transparent; color: var(--muted); font-weight: 600; }
+  .heatmap .r { background: transparent; color: var(--muted); font-weight: 600; text-align: right; padding-right: 8px; }
+  .heatmap .c { color: #fff; }
+
+  /* EXAMPLES GRID */
+  .examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+  .ex { background: var(--bg); border-radius: 12px; padding: 18px; border-left: 3px solid var(--primary); }
+  .ex.alt1 { border-left-color: var(--accent); }
+  .ex.alt2 { border-left-color: var(--emerald); }
+  .ex h5 { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .ex p { font-size: 13.5px; }
+
+  /* COMPARISON TABLE */
+  .compare { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+  .compare th, .compare td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+  .compare th { background: var(--primary-50); color: var(--primary-700); font-weight: 700; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .compare tr:last-child td { border-bottom: none; }
+
+  /* QUIZ */
+  .quiz { background: linear-gradient(160deg, var(--primary-900), var(--primary-700)); color: #f8fafc; border-radius: 22px; padding: 40px; }
+  .quiz .head { text-align: center; margin-bottom: 30px; }
+  .quiz .head .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); background: rgba(245, 158, 11, 0.15); padding: 6px 12px; border-radius: 999px; margin-bottom: 10px; }
+  .quiz h2 { color: #fff; font-size: 30px; }
+  .quiz .head p { color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 6px; }
+  .q-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 22px; margin-bottom: 14px; }
+  .q-card .q-num { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .q-card .q-text { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin-bottom: 14px; color: #fff; }
+  .q-card .opts { display: flex; flex-direction: column; gap: 8px; }
+  .q-card .opt { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; text-align: left; color: #fff; font-family: inherit; width: 100%; }
+  .q-card .opt:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+  .q-card .opt .letter { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .q-card .opt.correct { background: rgba(5, 150, 105, 0.25); border-color: var(--emerald); }
+  .q-card .opt.wrong { background: rgba(220, 38, 38, 0.25); border-color: var(--coral); }
+  .q-card .opt:disabled { cursor: default; }
+  .q-card .feedback { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 13px; display: none; }
+  .q-card .feedback.show { display: block; }
+  .q-card .feedback.ok { background: rgba(5, 150, 105, 0.15); color: #6ee7b7; }
+  .q-card .feedback.no { background: rgba(220, 38, 38, 0.15); color: #fca5a5; }
+  .quiz-actions { display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .btn { padding: 12px 22px; border-radius: 999px; border: none; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: #1f2937; }
+  .btn-primary:hover { background: #fbbf24; }
+  .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+  .score-card { text-align: center; padding: 30px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; margin-top: 20px; display: none; }
+  .score-card.show { display: block; }
+  .score-card .big { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 900; color: var(--accent); line-height: 1; }
+  .score-card .lbl { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 8px; }
+  .score-card .msg { font-family: 'Fraunces', serif; font-size: 18px; font-style: italic; margin-top: 14px; color: #fff; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: #cbd5e1; padding: 40px 0 24px; margin-top: 40px; }
+  footer .row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; }
+  footer .links { display: flex; gap: 18px; }
+  footer a { color: #cbd5e1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .menu-grid, .examples { grid-template-columns: repeat(2, 1fr); }
+    .topic .body { grid-template-columns: 1fr; }
+    nav.top ul { display: none; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 56px 0; }
+    .menu-grid, .examples { grid-template-columns: 1fr; }
+    .topic, .quiz { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container row">
+    <div class="brand">
+      <span class="mark"><i class="fa-solid fa-chart-scatter"></i></span>
+      <span>Estadística Multivariada</span>
+    </div>
+    <ul>
+      <li><a class="link" href="#menu">Menú</a></li>
+      <li><a class="link" href="#tema1">Conceptos</a></li>
+      <li><a class="link" href="#tema2">Inferencial</a></li>
+      <li><a class="link" href="#tema3">Técnicas</a></li>
+      <li><a class="link" href="#tema4">Correlación</a></li>
+      <li><a class="link" href="#tema5">Ejemplos</a></li>
+      <li><a class="link" href="#quiz">Quiz</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow"><i class="fa-solid fa-graduation-cap"></i> Actividad Formativa 1</span>
+    <h1>Estadística <span class="accent">Multivariada</span> · Menú Interactivo</h1>
+    <p class="lede">Recorrido por los conceptos básicos del análisis multivariado y su relación con la estadística inferencial, con ejemplos prácticos, visualizaciones y un mini-quiz para afianzar lo aprendido.</p>
+    <div class="quick">
+      <div><i class="fa-solid fa-book"></i> 5 temas + 1 quiz</div>
+      <div><i class="fa-solid fa-clock"></i> ~25 min</div>
+      <div><i class="fa-solid fa-signal"></i> Nivel introductorio</div>
+    </div>
+  </div>
+</header>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Menú principal</div>
+      <h2>Elige por dónde empezar</h2>
+      <p class="lead">Cinco módulos temáticos más una evaluación rápida. Cada tarjeta enlaza a su sección correspondiente.</p>
+    </div>
+    <div class="menu-grid">
+      <a class="menu-card" href="#tema1">
+        <span class="num">01</span>
+        <div class="ic"><i class="fa-solid fa-cubes-stacked"></i></div>
+        <h3>Conceptos básicos</h3>
+        <p>¿Qué es el análisis multivariado y cómo se diferencia del univariado y bivariado?</p>
+      </a>
+      <a class="menu-card" href="#tema2">
+        <span class="num">02</span>
+        <div class="ic"><i class="fa-solid fa-arrows-left-right"></i></div>
+        <h3>Relación con inferencial</h3>
+        <p>Cómo los métodos multivariados extienden las pruebas de hipótesis y los intervalos de confianza.</p>
+      </a>
+      <a class="menu-card" href="#tema3">
+        <span class="num">03</span>
+        <div class="ic"><i class="fa-solid fa-sitemap"></i></div>
+        <h3>Técnicas principales</h3>
+        <p>Regresión múltiple, PCA, análisis factorial, cluster, MANOVA y discriminante.</p>
+      </a>
+      <a class="menu-card" href="#tema4">
+        <span class="num">04</span>
+        <div class="ic"><i class="fa-solid fa-grip"></i></div>
+        <h3>Correlación y covarianza</h3>
+        <p>Lectura e interpretación de la matriz de correlaciones y su heatmap.</p>
+      </a>
+      <a class="menu-card" href="#tema5">
+        <span class="num">05</span>
+        <div class="ic"><i class="fa-solid fa-flask"></i></div>
+        <h3>Ejemplos prácticos</h3>
+        <p>Casos aplicados: marketing, salud, educación y predicción de abandono.</p>
+      </a>
+      <a class="menu-card" href="#quiz" style="background: linear-gradient(135deg, var(--primary-900), var(--primary-700)); color: #fff; border-color: var(--primary);">
+        <span class="num" style="color: rgba(255,255,255,0.2);">★</span>
+        <div class="ic" style="background: rgba(255,255,255,0.15); color: #fff;"><i class="fa-solid fa-circle-question"></i></div>
+        <h3 style="color: #fff;">Mini-quiz</h3>
+        <p style="color: rgba(255,255,255,0.7);">8 preguntas (verdadero/falso + opción múltiple) con retroalimentación inmediata.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TEMA 1 -->
+<section id="tema1">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Módulo 01</div>
+      <h2>Conceptos básicos</h2>
+    </div>
+    <div class="topic">
+      <div class="top">
+        <div class="ic"><i class="fa-solid fa-cubes-stacked"></i></div>
+        <div>
+          <div class="num">TEMA 01</div>
+          <h2>¿Qué es la estadística multivariada?</h2>
+        </div>
+      </div>
+      <div class="body">
+        <div>
+          <p>La <strong>estadística multivariada</strong> es el conjunto de métodos que analizan <strong>simultáneamente tres o más variables</strong> medidas sobre los mismos individuos u objetos. A diferencia del análisis univariado (una variable) o bivariado (dos variables), permite capturar las <em>relaciones conjuntas</em> entre múltiples dimensiones de un fenómeno.</p>
+          <p>Su objetivo central es <strong>resumir, explicar o predecir</strong> estructuras complejas en los datos, reducir dimensionalidad, clasificar observaciones o contrastar hipótesis cuando varias variables responden a la vez.</p>
+          <ul>
+            <li><strong>Univariado:</strong> una variable (media, varianza, prueba t).</li>
+            <li><strong>Bivariado:</strong> dos variables (correlación, chi-cuadrado).</li>
+            <li><strong>Multivariado:</strong> tres o más variables analizadas en conjunto.</li>
+          </ul>
+        </div>
+        <div class="visual">
+          <h5>Variables medidas por observación</h5>
+          <div class="chart-wrap"><canvas id="chartConcept"></canvas></div>
+          <div class="callout"><i class="fa-solid fa-lightbulb"></i> Cada individuo es un punto en un espacio de tantas dimensiones como variables se midan.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMA 2 -->
+<section id="tema2">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Módulo 02</div>
+      <h2>Relación con la estadística inferencial</h2>
+    </div>
+    <div class="topic">
+      <div class="top">
+        <div class="ic"><i class="fa-solid fa-arrows-left-right"></i></div>
+        <div>
+          <div class="num">TEMA 02</div>
+          <h2>De la t de Student a la Lambda de Wilks</h2>
+        </div>
+      </div>
+      <div class="body">
+        <div>
+          <p>La <strong>estadística inferencial</strong> generaliza resultados de una muestra a una población usando distribuciones de probabilidad, pruebas de hipótesis e intervalos de confianza. Los métodos multivariados son su <em>extensión natural</em>: en lugar de operar sobre una sola variable, lo hacen sobre vectores y matrices.</p>
+          <p>El contraste de hipótesis multivariado compara vectores de medias (Hotelling's T²), matrices de covarianza (prueba de Box) o combinaciones lineales de variables (Lambda de Wilks en MANOVA). Los supuestos también se generalizan: normalidad multivariada, homogeneidad de covarianzas y ausencia de multicolinealidad severa.</p>
+          <table class="compare">
+            <thead>
+              <tr><th>Inferencial</th><th>Extensión multivariada</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Prueba t para una media</td><td>Hotelling's T² para vector de medias</td></tr>
+              <tr><td>ANOVA de un factor</td><td>MANOVA (varias variables dependiente)</td></tr>
+              <tr><td>Correlación de Pearson</td><td>Matriz de correlaciones + pruebas parciales</td></tr>
+              <tr><td>Chi-cuadrado de independencia</td><td>Análisis de correspondencias / log-lineal</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="visual">
+          <h5>Inferencial vs. multivariada</h5>
+          <div class="chart-wrap"><canvas id="chartCompare"></canvas></div>
+          <div class="callout"><i class="fa-solid fa-link"></i> Misma lógica: estimar, contrastar, concluir. Más variables, más parámetros, más supuestos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMA 3 -->
+<section id="tema3">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Módulo 03</div>
+      <h2>Técnicas principales</h2>
+    </div>
+    <div class="topic">
+      <div class="top">
+        <div class="ic"><i class="fa-solid fa-sitemap"></i></div>
+        <div>
+          <div class="num">TEMA 03</div>
+          <h2>Cinco familias de métodos</h2>
+        </div>
+      </div>
+      <div class="body">
+        <div>
+          <p>Las técnicas multivariadas se agrupan según el objetivo del análisis:</p>
+          <ul>
+            <li><strong>Regresión múltiple:</strong> predecir una variable dependiente Y a partir de varias X (X₁, X₂, …, Xₖ).</li>
+            <li><strong>Análisis de Componentes Principales (PCA):</strong> reducir dimensionalidad creando combinaciones lineales no correlacionadas que expliquen la mayor varianza posible.</li>
+            <li><strong>Análisis factorial:</strong> identificar <em>factores latentes</em> que expliquen la covariación entre un conjunto de variables observadas.</li>
+            <li><strong>Análisis cluster:</strong> agrupar observaciones en conglomerados homogéneos según su similitud (jerárquico o k-medias).</li>
+            <li><strong>Análisis discriminante / MANOVA:</strong> clasificar observaciones en grupos predefinidos o comparar vectores de medias entre grupos.</li>
+          </ul>
+        </div>
+        <div class="visual">
+          <h5>Varianza explicada por PCA</h5>
+          <div class="chart-wrap"><canvas id="chartPCA"></canvas></div>
+          <div class="callout"><i class="fa-solid fa-compress"></i> Con 2 o 3 componentes se suele explicar entre 60% y 80% de la varianza original.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMA 4 -->
+<section id="tema4">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Módulo 04</div>
+      <h2>Correlación y covarianza</h2>
+    </div>
+    <div class="topic">
+      <div class="top">
+        <div class="ic"><i class="fa-solid fa-grip"></i></div>
+        <div>
+          <div class="num">TEMA 04</div>
+          <h2>Lectura de la matriz de correlaciones</h2>
+        </div>
+      </div>
+      <div class="body">
+        <div>
+          <p>La <strong>covarianza</strong> mide cómo dos variables varían juntas (en unidades originales), mientras que la <strong>correlación de Pearson</strong> la estandariza entre −1 y +1, facilitando la comparación.</p>
+          <p>En un estudio multivariado se construye una <strong>matriz de correlaciones</strong> de tamaño <em>p × p</em> (siendo <em>p</em> el número de variables). Su inspección visual —el <em>heatmap</em>— es el primer paso de cualquier análisis: revela patrones, redundancias (multicolinealidad) y agrupamientos naturales entre variables.</p>
+          <ul>
+            <li><strong>|r| &lt; 0.3</strong> · correlación débil.</li>
+            <li><strong>0.3 ≤ |r| &lt; 0.7</strong> · correlación moderada.</li>
+            <li><strong>|r| ≥ 0.7</strong> · correlación fuerte (vigilar multicolinealidad).</li>
+          </ul>
+        </div>
+        <div class="visual">
+          <h5>Heatmap de correlaciones (4 variables)</h5>
+          <div class="heatmap" id="heatmap"></div>
+          <div class="callout"><i class="fa-solid fa-fire"></i> Rojos intensos = correlación negativa fuerte; azules = positiva fuerte.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMA 5 -->
+<section id="tema5">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Módulo 05</div>
+      <h2>Ejemplos prácticos</h2>
+    </div>
+    <div class="topic">
+      <div class="top">
+        <div class="ic"><i class="fa-solid fa-flask"></i></div>
+        <div>
+          <div class="num">TEMA 05</div>
+          <h2>Aplicaciones en problemas reales</h2>
+        </div>
+      </div>
+      <p>Cada ejemplo muestra cómo el análisis multivariado responde preguntas que univariado no puede:</p>
+      <div class="examples">
+        <div class="ex">
+          <h5>Marketing</h5>
+          <p>Segmentar clientes según <em>edad, ingreso, frecuencia de compra y ticket promedio</em> mediante análisis cluster para diseñar campañas diferenciadas.</p>
+        </div>
+        <div class="ex alt1">
+          <h5>Salud</h5>
+          <p>Predecir el riesgo cardiovascular con regresión múltiple a partir de <em>presión arterial, colesterol, IMC, tabaquismo y antecedentes</em>.</p>
+        </div>
+        <div class="ex alt2">
+          <h5>Educación</h5>
+          <p>Identificar con PCA los <em>factores latentes</em> (socioeconómico, cognitivo, motivacional) detrás del rendimiento escolar.</p>
+        </div>
+        <div class="ex">
+          <h5>Software / datos</h5>
+          <p>Reducir con PCA las 30 variables de un <em>dataset</em> de churn a 4 componentes que concentran el 78% de la varianza.</p>
+        </div>
+        <div class="ex alt1">
+          <h5>Calidad industrial</h5>
+          <p>Usar MANOVA para comparar <em>varias métricas de calidad</em> entre tres líneas de producción simultáneamente.</p>
+        </div>
+        <div class="ex alt2">
+          <h5>Ciencias sociales</h5>
+          <p>Aplicar análisis discriminante para clasificar municipios según <em>marginación, escolaridad y acceso a servicios</em>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="container">
+    <div class="quiz">
+      <div class="head">
+        <div class="tag">Evaluación rápida</div>
+        <h2>Mini-quiz · 8 preguntas</h2>
+        <p>Verdadero/Falso y opción múltiple. Responde para ver tu calificación final.</p>
+      </div>
+
+      <div id="quizContainer"></div>
+
+      <div class="score-card" id="scoreCard">
+        <div class="big" id="scoreNum">0/8</div>
+        <div class="lbl" id="scoreLbl">puntos</div>
+        <div class="msg" id="scoreMsg"></div>
+      </div>
+
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="checkBtn"><i class="fa-solid fa-check"></i> Calificar</button>
+        <button class="btn btn-ghost" id="restartBtn"><i class="fa-solid fa-rotate-right"></i> Reiniciar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container row">
+    <span>© 2026 · Actividad Formativa 1 · Estadística Multivariada</span>
+    <div class="links">
+      <a href="#menu">Menú</a>
+      <a href="#quiz">Quiz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ CHARTS ============ */
+const BLUE = '#4338ca', AMBER = '#f59e0b', EMERALD = '#059669', SLATE = '#94a3b8';
+
+new Chart(document.getElementById('chartConcept'), {
+  type: 'bar',
+  data: {
+    labels: ['Ingreso', 'Edad', 'Frec. compra', 'Ticket prom.', 'Antigüedad'],
+    datasets: [{ label: 'Valor medido', data: [42, 35, 12, 88, 5], backgroundColor: BLUE, borderRadius: 6 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } }
+});
+
+new Chart(document.getElementById('chartCompare'), {
+  type: 'bar',
+  data: {
+    labels: ['# variables', 'Parámetros', 'Supuestos', 'Potencia'],
+    datasets: [
+      { label: 'Inferencial', data: [1, 2, 3, 4], backgroundColor: SLATE, borderRadius: 6 },
+      { label: 'Multivariada', data: [4, 12, 6, 8], backgroundColor: BLUE, borderRadius: 6 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, scales: { y: { grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } }
+});
+
+new Chart(document.getElementById('chartPCA'), {
+  type: 'line',
+  data: {
+    labels: ['PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7'],
+    datasets: [
+      { label: 'Varianza explicada', data: [42, 22, 11, 8, 6, 5, 4], borderColor: BLUE, backgroundColor: 'rgba(67,56,202,0.15)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: AMBER },
+      { label: 'Acumulada (%)', data: [42, 64, 75, 83, 89, 94, 98], borderColor: EMERALD, borderDash: [4, 4], fill: false, tension: 0.3, pointRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, scales: { y: { grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } }
+});
+
+/* ============ HEATMAP ============ */
+const heat = [
+  ['Ingreso',   [ 1.00,  0.45,  0.62, -0.30]],
+  ['Edad',      [ 0.45,  1.00,  0.18, -0.55]],
+  ['Frecuencia',[ 0.62,  0.18,  1.00, -0.20]],
+  ['Ticket',    [-0.30, -0.55, -0.20,  1.00]]
+];
+function colorFor(r) {
+  if (r === 1) return '#3730a3';
+  const a = Math.abs(r);
+  if (r > 0) return `rgba(67, 56, 202, ${0.15 + a * 0.85})`;
+  return `rgba(220, 38, 38, ${0.15 + a * 0.85})`;
+}
+const hEl = document.getElementById('heatmap');
+let html = '<div class="h"></div>';
+heat[0][1].forEach((_, j) => html += `<div class="h">${['Ingreso','Edad','Frec.','Ticket'][j]}</div>`);
+heat.forEach(row => {
+  html += `<div class="r">${row[0]}</div>`;
+  row[1].forEach(v => html += `<div class="c" style="background:${colorFor(v)}">${v.toFixed(2)}</div>`);
+});
+hEl.innerHTML = html;
+
+/* ============ QUIZ ============ */
+const QUESTIONS = [
+  { type: 'tf', q: 'La estadística multivariada analiza simultáneamente tres o más variables medidas sobre los mismos individuos.', a: true, exp: 'Correcto: el rasgo definitorio del análisis multivariado es considerar al menos tres variables en conjunto.' },
+  { type: 'mc', q: '¿Qué técnica se utiliza para reducir la dimensionalidad de un conjunto de variables correlacionadas?', opts: ['Regresión lineal simple', 'Análisis de componentes principales (PCA)', 'Chi-cuadrado de independencia', 'Prueba t de Student'], a: 1, exp: 'PCA genera combinaciones lineales no correlacionadas (componentes) que concentran la mayor parte de la varianza.' },
+  { type: 'tf', q: 'La correlación de Pearson es una técnica multivariada porque utiliza dos variables.', a: false, exp: 'Falso: el coeficiente de Pearson es bivariado. La versión multivariada sería la matriz de correlaciones y sus pruebas asociadas.' },
+  { type: 'mc', q: 'En regresión múltiple, ¿qué se busca?', opts: ['Predecir una variable dependiente a partir de varias independientes', 'Reducir el número de observaciones', 'Comparar la varianza de un solo grupo', 'Construir una tabla de frecuencias'], a: 0, exp: 'La regresión múltiple modela Y en función de X₁, X₂, …, Xₖ para explicar o predecir.' },
+  { type: 'tf', q: 'El análisis cluster requiere que los grupos estén previamente definidos.', a: false, exp: 'Falso: el clustering es una técnica <em>no supervisada</em>; los grupos se forman a partir de la similitud entre observaciones.' },
+  { type: 'mc', q: '¿Cuál es el equivalente multivariado del ANOVA de un factor?', opts: ['Chi-cuadrado', 'MANOVA', 'Kruskal-Wallis', 'Regresión logística'], a: 1, exp: 'MANOVA compara vectores de medias entre grupos cuando hay más de una variable dependiente.' },
+  { type: 'mc', q: 'Una correlación de r = 0.85 entre dos predictores en una regresión múltiple indica:', opts: ['Excelente ajuste global', 'Multicolinealidad severa que debe revisarse', 'Que el modelo no es válido en ningún caso', 'Que las variables son independientes'], a: 1, exp: 'Valores |r| ≥ 0.7 entre predictores suelen indicar multicolinealidad, lo que inflá los errores estándar de los coeficientes.' },
+  { type: 'mc', q: 'La matriz de covarianza de un conjunto de variables contiene en su diagonal:', opts: ['Las covarianzas entre pares de variables', 'Las varianzas de cada variable', 'Las medias de cada variable', 'Los coeficientes de correlación'], a: 1, exp: 'En la diagonal de la matriz de covarianza están las varianzas de cada variable; fuera de la diagonal, las covarianzas.' }
+];
+
+const quizEl = document.getElementById('quizContainer');
+function renderQuiz() {
+  quizEl.innerHTML = QUESTIONS.map((q, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    if (q.type === 'tf') {
+      return `
+        <div class="q-card" data-i="${i}">
+          <div class="q-num">Pregunta ${num} · Verdadero / Falso</div>
+          <div class="q-text">${q.q}</div>
+          <div class="opts">
+            <button class="opt" data-v="true"><span class="letter">V</span> Verdadero</button>
+            <button class="opt" data-v="false"><span class="letter">F</span> Falso</button>
+          </div>
+          <div class="feedback"></div>
+        </div>`;
+    }
+    return `
+      <div class="q-card" data-i="${i}">
+        <div class="q-num">Pregunta ${num} · Opción múltiple</div>
+        <div class="q-text">${q.q}</div>
+        <div class="opts">
+          ${q.opts.map((o, j) => `<button class="opt" data-v="${j}"><span class="letter">${String.fromCharCode(65 + j)}</span> ${o}</button>`).join('')}
+        </div>
+        <div class="feedback"></div>
+      </div>`;
+  }).join('');
+}
+renderQuiz();
+
+const answers = new Array(QUESTIONS.length).fill(null);
+quizEl.addEventListener('click', e => {
+  const btn = e.target.closest('.opt');
+  if (!btn) return;
+  const card = btn.closest('.q-card');
+  const i = +card.dataset.i;
+  card.querySelectorAll('.opt').forEach(b => { b.disabled = true; b.classList.remove('correct', 'wrong'); });
+  const val = btn.dataset.v === 'true' ? true : btn.dataset.v === 'false' ? false : +btn.dataset.v;
+  answers[i] = val;
+  const correct = QUESTIONS[i].a;
+  const fb = card.querySelector('.feedback');
+  if (val === correct) {
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = '<i class="fa-solid fa-check"></i> ¡Correcto! ' + QUESTIONS[i].exp;
+  } else {
+    btn.classList.add('wrong');
+    card.querySelectorAll('.opt').forEach(b => {
+      const bv = b.dataset.v === 'true' ? true : b.dataset.v === 'false' ? false : +b.dataset.v;
+      if (bv === correct) b.classList.add('correct');
+    });
+    fb.className = 'feedback show no';
+    fb.innerHTML = '<i class="fa-solid fa-xmark"></i> Incorrecto. ' + QUESTIONS[i].exp;
+  }
+});
+
+document.getElementById('checkBtn').addEventListener('click', () => {
+  let score = 0;
+  QUESTIONS.forEach((q, i) => { if (answers[i] === q.a) score++; });
+  const total = QUESTIONS.length;
+  const card = document.getElementById('scoreCard');
+  card.classList.add('show');
+  document.getElementById('scoreNum').textContent = `${score}/${total}`;
+  const pct = (score / total) * 100;
+  document.getElementById('scoreLbl').textContent = `${pct.toFixed(0)}% de aciertos`;
+  let msg = '';
+  if (pct === 100) msg = '¡Perfecto! Dominio total del tema.';
+  else if (pct >= 75) msg = 'Muy bien, tienes una base sólida.';
+  else if (pct >= 50) msg = 'Aprobado, pero conviene reforzar algunos conceptos.';
+  else msg = 'Repasa los módulos 1–5 antes de volver a intentarlo.';
+  document.getElementById('scoreMsg').textContent = msg;
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  for (let i = 0; i < answers.length; i++) answers[i] = null;
+  document.getElementById('scoreCard').classList.remove('show');
+  renderQuiz();
+  document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+});
+</script>
+</body>
+</html>

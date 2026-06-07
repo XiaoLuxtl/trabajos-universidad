@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Desarrollo Sustentable · Sistemas Naturales e Ideologías</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f5ef;
+    --ink: #14211b;
+    --muted: #5b6b62;
+    --line: #e3e1d6;
+    --leaf-900: #143324;
+    --leaf-700: #1f5b3f;
+    --leaf-500: #2f8a5a;
+    --leaf-300: #7fc4a0;
+    --leaf-100: #d6ecdd;
+    --earth-700: #6f4e37;
+    --earth-500: #b08a5b;
+    --earth-100: #f0e6d2;
+    --sun: #ee9b00;
+    --sky: #277da1;
+    --coral: #c1442e;
+    --paper: #fffdf7;
+    --shadow: 0 12px 40px -16px rgba(20, 33, 27, 0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- NAV ---------- */
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 245, 239, 0.85);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .row { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  nav.top .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; }
+  nav.top .brand .dot { width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--leaf-300), var(--leaf-700) 70%); box-shadow: inset -4px -4px 8px rgba(0,0,0,0.15); }
+  nav.top ul { list-style: none; display: flex; gap: 6px; flex-wrap: wrap; }
+  nav.top a.link { display: inline-block; padding: 8px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); transition: all 0.2s; }
+  nav.top a.link:hover { background: var(--leaf-100); color: var(--leaf-900); }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 96px 0 80px;
+    background:
+      radial-gradient(900px 500px at 85% 10%, rgba(127, 196, 160, 0.35), transparent 60%),
+      radial-gradient(700px 400px at 5% 90%, rgba(238, 155, 0, 0.15), transparent 60%),
+      linear-gradient(180deg, #f3f1e8 0%, var(--bg) 100%);
+  }
+  .hero .leaves { position: absolute; inset: 0; pointer-events: none; opacity: 0.5; }
+  .hero .leaves::before, .hero .leaves::after {
+    content: ''; position: absolute; border-radius: 50% 0 50% 0;
+  }
+  .hero .leaves::before { width: 320px; height: 320px; background: radial-gradient(circle at 30% 30%, var(--leaf-300), var(--leaf-500)); top: -80px; right: -60px; transform: rotate(35deg); opacity: 0.4; }
+  .hero .leaves::after { width: 220px; height: 220px; background: radial-gradient(circle at 30% 30%, var(--sun), #f6ae2d); bottom: -50px; left: -50px; opacity: 0.18; }
+
+  .hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--leaf-700); background: var(--leaf-100); padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(31, 91, 63, 0.18); }
+  .hero h1 { font-size: clamp(40px, 6vw, 76px); margin: 22px 0 18px; color: var(--leaf-900); }
+  .hero h1 .accent { background: linear-gradient(120deg, var(--leaf-700), var(--sun) 80%); -webkit-background-clip: text; background-clip: text; color: transparent; font-style: italic; font-weight: 900; }
+  .hero .lede { font-size: clamp(16px, 1.4vw, 19px); color: var(--muted); max-width: 740px; }
+  .hero .meta { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px; color: var(--muted); }
+  .hero .meta div { display: flex; align-items: center; gap: 8px; }
+  .hero .meta i { color: var(--leaf-700); }
+
+  .hero .scroll-cue { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .hero .scroll-cue::after { content: ''; width: 1px; height: 36px; background: linear-gradient(180deg, var(--leaf-700), transparent); animation: cue 1.8s ease-in-out infinite; }
+  @keyframes cue { 0%,100% { transform: scaleY(0.4); opacity: 0.3; } 50% { transform: scaleY(1); opacity: 1; } }
+
+  /* ---------- SECTION BASE ---------- */
+  section { padding: 96px 0; position: relative; }
+  .section-head { max-width: 760px; margin-bottom: 56px; }
+  .section-head .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--earth-700); margin-bottom: 14px; }
+  .section-head h2 { font-size: clamp(32px, 4.2vw, 52px); margin-bottom: 16px; }
+  .section-head p.lead { color: var(--muted); font-size: 17px; }
+
+  /* ---------- INTRO / TOOL MAPPING ---------- */
+  .intro { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .intro .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
+  .intro h2 { font-size: clamp(30px, 3.6vw, 44px); margin-bottom: 20px; }
+  .intro p { color: var(--muted); font-size: 16px; margin-bottom: 14px; }
+  .tool-map { background: var(--leaf-900); color: #f3f1e8; border-radius: 22px; padding: 32px; box-shadow: var(--shadow); }
+  .tool-map h3 { color: #fff; font-size: 20px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .tool-map h3 i { color: var(--leaf-300); }
+  .tool-map .sub { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 22px; }
+  .tool-map .swap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 14px 0; border-top: 1px solid rgba(255,255,255,0.08); }
+  .tool-map .swap:first-of-type { border-top: none; }
+  .tool-map .pill { padding: 10px 12px; border-radius: 12px; font-size: 13px; font-weight: 600; text-align: center; }
+  .tool-map .pill.from { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+  .tool-map .pill.to { background: linear-gradient(120deg, var(--leaf-500), var(--leaf-300)); color: #0a1a13; }
+  .tool-map .arrow { color: var(--leaf-300); font-size: 14px; }
+
+  /* ---------- NATURAL SYSTEMS ---------- */
+  .systems-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .sys-card { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px; transition: all 0.3s; position: relative; overflow: hidden; }
+  .sys-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--leaf-300); }
+  .sys-card .ic { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
+  .sys-card h4 { font-size: 18px; margin-bottom: 6px; font-family: 'Fraunces', serif; font-weight: 800; }
+  .sys-card p { font-size: 14px; color: var(--muted); }
+  .sys-card .c1 .ic { background: var(--leaf-100); color: var(--leaf-700); }
+  .sys-card .c2 .ic { background: #e6f1f8; color: var(--sky); }
+  .sys-card .c3 .ic { background: var(--earth-100); color: var(--earth-700); }
+  .sys-card .c4 .ic { background: #fde9d4; color: var(--sun); }
+
+  .def-box { margin-top: 40px; padding: 36px 40px; border-radius: 22px; background: linear-gradient(135deg, var(--leaf-900), var(--leaf-700)); color: #f7f5ef; box-shadow: var(--shadow); display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+  .def-box .mark { font-family: 'Fraunces', serif; font-size: 120px; line-height: 0.8; color: var(--leaf-300); opacity: 0.6; }
+  .def-box p { font-size: 18px; line-height: 1.55; }
+  .def-box p strong { color: #fff; }
+
+  /* ---------- INTERCONNECTION DIAGRAM ---------- */
+  .interconnect { background: linear-gradient(180deg, var(--bg) 0%, #efece1 100%); }
+  .ic-diagram { position: relative; height: 460px; max-width: 760px; margin: 0 auto; }
+  .ic-diagram .center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #d4eddb, var(--leaf-500) 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #0a1a13; font-family: 'Fraunces', serif; font-weight: 800; font-size: 18px; box-shadow: 0 20px 50px -10px rgba(31, 91, 63, 0.5); z-index: 3; }
+  .ic-diagram .center small { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--leaf-900); margin-top: 4px; }
+  .ic-diagram .node { position: absolute; width: 150px; height: 150px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 14px; font-size: 13px; font-weight: 600; color: var(--ink); background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); z-index: 2; }
+  .ic-diagram .node i { font-size: 24px; margin-bottom: 6px; }
+  .ic-diagram .node.n1 { top: 0; left: 50%; transform: translateX(-50%); background: #e6f1f8; border-color: #c2deec; color: var(--sky); }
+  .ic-diagram .node.n2 { top: 50%; right: 0; transform: translateY(-50%); background: #fde9d4; border-color: #f6cf95; color: #b76d00; }
+  .ic-diagram .node.n3 { bottom: 0; left: 50%; transform: translateX(-50%); background: var(--earth-100); border-color: #d8c5a1; color: var(--earth-700); }
+  .ic-diagram .node.n4 { top: 50%; left: 0; transform: translateY(-50%); background: #fadcd6; border-color: #efb8ad; color: var(--coral); }
+  .ic-diagram svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+  .ic-diagram svg.lines line { stroke: var(--leaf-700); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: 0.4; }
+
+  /* ---------- PERSPECTIVES ---------- */
+  .persp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .persp { border-radius: 24px; padding: 32px 28px; color: #fff; position: relative; overflow: hidden; min-height: 520px; display: flex; flex-direction: column; }
+  .persp::before { content: ''; position: absolute; inset: 0; background: radial-gradient(600px 300px at 100% 0%, rgba(255,255,255,0.12), transparent 60%); pointer-events: none; }
+  .persp .num { position: absolute; top: 16px; right: 24px; font-family: 'Fraunces', serif; font-size: 80px; font-weight: 900; opacity: 0.12; line-height: 1; }
+  .persp .head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .persp .head .ic { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .persp h3 { font-size: 26px; margin-bottom: 6px; }
+  .persp .head-title { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
+  .persp p.summary { font-size: 14px; opacity: 0.92; margin-bottom: 22px; }
+  .persp ul { list-style: none; }
+  .persp li { font-size: 14px; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 10px; }
+  .persp li:first-child { border-top: none; }
+  .persp li i { color: rgba(255,255,255,0.7); margin-top: 4px; font-size: 11px; }
+  .persp.econ { background: linear-gradient(160deg, #0a3d5c, #1d6a8a); }
+  .persp.soc { background: linear-gradient(160deg, #6a2c0a, #b04a16); }
+  .persp.pol { background: linear-gradient(160deg, #1a2e1f, #2d6a4f); }
+  .persp .quote { margin-top: auto; padding-top: 22px; font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; line-height: 1.4; opacity: 0.95; border-top: 1px solid rgba(255,255,255,0.2); }
+
+  /* ---------- STATS / CHARTS ---------- */
+  .stats { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 48px; }
+  .kpi { background: var(--bg); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+  .kpi .val { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 900; color: var(--leaf-700); line-height: 1; }
+  .kpi .val span { font-size: 18px; color: var(--muted); margin-left: 4px; }
+  .kpi .lbl { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .kpi .src { font-size: 11px; color: #98a39b; margin-top: 6px; font-style: italic; }
+
+  .charts { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+  .chart-card { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 24px; }
+  .chart-card h4 { font-size: 16px; margin-bottom: 4px; font-family: 'Fraunces', serif; }
+  .chart-card .sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* ---------- PADLET ---------- */
+  .padlet { background: linear-gradient(180deg, #efece1 0%, var(--bg) 100%); }
+  .padlet-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-bottom: 32px; min-height: 200px; }
+  .note { padding: 22px 20px 18px; border-radius: 8px; font-size: 14px; line-height: 1.45; color: #14211b; position: relative; box-shadow: 0 6px 18px -8px rgba(0,0,0,0.18); transform: rotate(var(--rot, 0deg)); transition: transform 0.2s; word-wrap: break-word; }
+  .note:hover { transform: rotate(0deg) scale(1.02); z-index: 5; }
+  .note .author { display: block; margin-top: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; }
+  .note .del { position: absolute; top: 6px; right: 8px; background: none; border: none; cursor: pointer; opacity: 0.4; font-size: 14px; }
+  .note .del:hover { opacity: 1; }
+  .c-yellow { background: #fff3a8; }
+  .c-pink { background: #fbc4d0; }
+  .c-mint { background: #c7ecd9; }
+  .c-sky { background: #c5e0f2; }
+  .c-lilac { background: #dac4f0; }
+  .c-peach { background: #ffd2a8; }
+
+  .padlet-form { background: var(--paper); border: 2px dashed var(--leaf-300); border-radius: 20px; padding: 24px; display: grid; grid-template-columns: 1fr 200px 140px auto; gap: 14px; align-items: end; }
+  .padlet-form .field { display: flex; flex-direction: column; gap: 6px; }
+  .padlet-form label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .padlet-form input, .padlet-form select { font-family: inherit; font-size: 14px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); }
+  .padlet-form input:focus, .padlet-form select:focus { outline: 2px solid var(--leaf-300); border-color: var(--leaf-500); }
+  .padlet-form button { background: var(--leaf-700); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; justify-content: center; }
+  .padlet-form button:hover { background: var(--leaf-900); }
+
+  /* ---------- PODCAST / AUDIO ---------- */
+  .podcast { background: var(--leaf-900); color: #f3f1e8; }
+  .podcast .section-head h2 { color: #fff; }
+  .podcast .section-head .tag { color: var(--leaf-300); }
+  .podcast .section-head p.lead { color: rgba(255,255,255,0.7); }
+
+  .pod-grid { display: grid; grid-template-columns: 320px 1fr; gap: 40px; align-items: start; }
+  .pod-cover { aspect-ratio: 1; border-radius: 24px; background: linear-gradient(160deg, var(--leaf-500), var(--leaf-700) 60%, #1a3d2b); padding: 28px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
+  .pod-cover::before { content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,0.05); top: -60px; right: -60px; }
+  .pod-cover .ep { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+  .pod-cover h3 { font-size: 28px; color: #fff; line-height: 1.1; }
+  .pod-cover .meta { font-size: 12px; opacity: 0.6; }
+
+  .pod-body { display: flex; flex-direction: column; gap: 18px; }
+  .pod-script { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px 22px; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.85); }
+  .pod-script h5 { color: var(--leaf-300); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 700; }
+  .pod-script strong { color: #fff; }
+  .pod-controls { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+  .pod-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .rec-btn { background: var(--coral); color: #fff; border: none; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; }
+  .rec-btn:hover { background: #a13a26; transform: translateY(-1px); }
+  .rec-btn.recording { animation: pulse 1.4s ease-in-out infinite; }
+  .rec-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .rec-btn i { font-size: 12px; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(193, 68, 46, 0.6); } 50% { box-shadow: 0 0 0 12px rgba(193, 68, 46, 0); } }
+  .play-btn { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 12px 18px; border-radius: 999px; font-weight: 600; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  .play-btn:hover { background: rgba(255,255,255,0.2); }
+  .play-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .pod-status { font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; }
+  .pod-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #777; }
+  .pod-status.live .dot { background: var(--coral); animation: pulse 1.4s infinite; }
+  .pod-status.ready .dot { background: var(--leaf-300); }
+  .pod-tips { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+  /* ---------- REFLECTION / T3 ---------- */
+  .reflection { background: var(--paper); border-top: 1px solid var(--line); }
+  .ref-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 48px; }
+  .ref-card { border: 1px solid var(--line); border-radius: 18px; padding: 26px; background: var(--bg); }
+  .ref-card h4 { font-size: 18px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; }
+  .ref-card h4 i { color: var(--leaf-700); }
+  .ref-card p { font-size: 14px; color: var(--muted); }
+  .ref-card textarea { width: 100%; margin-top: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); font-family: inherit; font-size: 14px; min-height: 80px; resize: vertical; }
+  .ref-card textarea:focus { outline: 2px solid var(--leaf-300); border-color: var(--leaf-500); }
+
+  .peer-section h3 { font-size: 26px; margin-bottom: 18px; font-family: 'Fraunces', serif; }
+  .peer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .peer { background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .peer .label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--leaf-700); margin-bottom: 8px; }
+  .peer h5 { font-size: 16px; margin-bottom: 6px; font-family: 'Fraunces', serif; }
+  .peer p { font-size: 13px; color: var(--muted); }
+  .peer .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .peer .tag { background: var(--leaf-100); color: var(--leaf-700); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+
+  /* ---------- FOOTER ---------- */
+  footer { background: var(--leaf-900); color: #cbd7cf; padding: 60px 0 30px; }
+  footer .grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  footer h5 { color: #fff; font-size: 14px; margin-bottom: 14px; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.05em; }
+  footer p, footer a { font-size: 13px; line-height: 1.7; }
+  footer a:hover { color: var(--leaf-300); }
+  footer ul { list-style: none; }
+  footer .bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; font-size: 12px; color: rgba(255,255,255,0.5); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 960px) {
+    .intro .grid, .charts, .pod-grid, .footer .grid { grid-template-columns: 1fr; }
+    .systems-grid, .persp-grid, .kpis, .peer-grid { grid-template-columns: repeat(2, 1fr); }
+    .ic-diagram { transform: scale(0.85); transform-origin: top center; height: 420px; }
+    .padlet-form { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 64px 0; }
+    .systems-grid, .persp-grid, .kpis, .peer-grid { grid-template-columns: 1fr; }
+    .ic-diagram { transform: scale(0.65); height: 360px; }
+    nav.top ul { display: none; }
+    .def-box { grid-template-columns: 1fr; }
+    .def-box .mark { font-size: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container row">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>Desarrollo Sustentable</span>
+    </div>
+    <ul>
+      <li><a class="link" href="#intro">Introducción</a></li>
+      <li><a class="link" href="#tarea1">Tarea 1</a></li>
+      <li><a class="link" href="#perspectivas">Perspectivas</a></li>
+      <li><a class="link" href="#estadisticas">Datos</a></li>
+      <li><a class="link" href="#padlet">Lluvia de ideas</a></li>
+      <li><a class="link" href="#podcast">Podcast</a></li>
+      <li><a class="link" href="#presentacion">Tarea 3</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="leaves"></div>
+  <div class="container">
+    <span class="eyebrow"><i class="fa-solid fa-leaf"></i> Materia · Desarrollo Sustentable</span>
+    <h1>Sistemas naturales <span class="accent">en diálogo</span> con la economía, la sociedad y la política.</h1>
+    <p class="lede">Una infografía-interactiva sobre cómo las ideologías económicas, sociales y políticas se entrelazan con los sistemas naturales y determinan la ruta del desarrollo sostenible.</p>
+    <div class="meta">
+      <div><i class="fa-solid fa-book"></i> Actividad Formativa · Tareas 1, 2 y 3</div>
+      <div><i class="fa-solid fa-user-graduate"></i> Trabajo individual / en equipo</div>
+      <div><i class="fa-solid fa-calendar"></i> Periodo 2026</div>
+    </div>
+  </div>
+  <div class="scroll-cue">Desplázate</div>
+</header>
+
+<!-- INTRO -->
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <h2>Sobre esta entrega</h2>
+        <p>La actividad pide profundizar en la <strong>interconexión</strong> entre las ideologías económicas, sociales y políticas y los <strong>sistemas naturales</strong>, y culminar con una presentación reflexiva. Aquí encontrarás, en un solo archivo HTML, los productos equivalentes a los solicitados en la guía.</p>
+        <p>Para mantener el proyecto <em>estático y portable</em>, las herramientas externas (Canva, Piktochart, Padlet, Audacity, Anchor) fueron sustituidas por <strong>librerías CDN</strong> y <strong>Web APIs nativas</strong> del navegador, sin instalación ni dependencias locales.</p>
+      </div>
+      <div class="tool-map">
+        <h3><i class="fa-solid fa-screwdriver-wrench"></i> Mapeo de herramientas</h3>
+        <div class="sub">Sustituciones utilizadas en esta versión</div>
+        <div class="swap">
+          <div class="pill from">Canva / Piktochart</div>
+          <i class="fa-solid fa-arrow-right arrow"></i>
+          <div class="pill to">HTML + CSS + Chart.js</div>
+        </div>
+        <div class="swap">
+          <div class="pill from">Padlet</div>
+          <i class="fa-solid fa-arrow-right arrow"></i>
+          <div class="pill to">Muro de notas (localStorage)</div>
+        </div>
+        <div class="swap">
+          <div class="pill from">Audacity</div>
+          <i class="fa-solid fa-arrow-right arrow"></i>
+          <div class="pill to">MediaRecorder API</div>
+        </div>
+        <div class="swap">
+          <div class="pill from">Anchor</div>
+          <i class="fa-solid fa-arrow-right arrow"></i>
+          <div class="pill to">Reproductor HTML5 nativo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAREA 1 -->
+<section id="tarea1">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 1 · Comprensión</div>
+      <h2>Sistemas naturales y desarrollo sostenible</h2>
+      <p class="lead">Los sistemas naturales son el conjunto de elementos bióticos y abióticos que interactúan en ciclos (agua, carbono, nitrógeno, energía). El desarrollo sostenible busca que las actividades humanas se mantengan dentro de la capacidad de carga de esos sistemas.</p>
+    </div>
+
+    <div class="systems-grid">
+      <div class="sys-card c1">
+        <div class="ic"><i class="fa-solid fa-tree"></i></div>
+        <h4>Ecosistemas</h4>
+        <p>Bosques, océanos, suelos y humedales proveen servicios: regulación climática, polinización, fertilidad.</p>
+      </div>
+      <div class="sys-card c2">
+        <div class="ic"><i class="fa-solid fa-droplet"></i></div>
+        <h4>Ciclos biogeoquímicos</h4>
+        <p>Agua, carbono, nitrógeno y fósforo recirculan materia y energía. La intervención humana rompe su equilibrio.</p>
+      </div>
+      <div class="sys-card c3">
+        <div class="ic"><i class="fa-solid fa-paw"></i></div>
+        <h4>Biodiversidad</h4>
+        <p>La variedad genética, de especies y ecosistemas da resiliencia. Su pérdida reduce la capacidad de adaptación.</p>
+      </div>
+      <div class="sys-card c4">
+        <div class="ic"><i class="fa-solid fa-sun"></i></div>
+        <h4>Energía y clima</h4>
+        <p>El balance radiativo terrestre regula la temperatura. Las emisiones de GEI lo alteran desde la era industrial.</p>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="mark">"</div>
+      <p>El <strong>desarrollo sostenible</strong> es el desarrollo que satisface las necesidades del presente <strong>sin comprometer la capacidad de las generaciones futuras</strong> de satisfacer las suyas. <em>— Informe Brundtland, ONU (1987)</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- INTERCONNECTION -->
+<section class="interconnect">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 1 · Mapa sistémico</div>
+      <h2>Cuatro sistemas, una sola realidad</h2>
+      <p class="lead">El desarrollo sostenible no es un problema ambiental aislado: es la intersección entre los sistemas naturales, económicos, sociales y políticos. Lo que ocurre en uno se propaga a los demás.</p>
+    </div>
+
+    <div class="ic-diagram">
+      <svg class="lines" viewBox="0 0 760 460" preserveAspectRatio="xMidYMid meet">
+        <line x1="380" y1="75" x2="380" y2="230" />
+        <line x1="380" y1="230" x2="685" y2="230" />
+        <line x1="380" y1="230" x2="380" y2="385" />
+        <line x1="380" y1="230" x2="75" y2="230" />
+        <line x1="380" y1="75" x2="685" y2="230" stroke-dasharray="2 6" opacity="0.3" />
+        <line x1="380" y1="75" x2="380" y2="385" stroke-dasharray="2 6" opacity="0.3" />
+        <line x1="380" y1="75" x2="75" y2="230" stroke-dasharray="2 6" opacity="0.3" />
+        <line x1="685" y1="230" x2="380" y2="385" stroke-dasharray="2 6" opacity="0.3" />
+        <line x1="380" y1="385" x2="75" y2="230" stroke-dasharray="2 6" opacity="0.3" />
+        <line x1="685" y1="230" x2="75" y2="230" stroke-dasharray="2 6" opacity="0.3" />
+      </svg>
+      <div class="center">Sistemas<br/>Naturales<small>núcleo</small></div>
+      <div class="node n1"><i class="fa-solid fa-landmark"></i>Político</div>
+      <div class="node n2"><i class="fa-solid fa-coins"></i>Económico</div>
+      <div class="node n3"><i class="fa-solid fa-people-group"></i>Social</div>
+      <div class="node n4"><i class="fa-solid fa-globe"></i>Ambiental global</div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSPECTIVES -->
+<section id="perspectivas">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 1 · Perspectivas</div>
+      <h2>Tres lentes sobre la misma crisis</h2>
+      <p class="lead">La mirada económica, la mirada social y la mirada política se entrelazan: ninguna por sí sola puede resolver el desafío del desarrollo sostenible. La infografía de mi equipo integra las tres.</p>
+    </div>
+
+    <div class="persp-grid">
+      <div class="persp econ">
+        <div class="num">01</div>
+        <div class="head">
+          <div class="ic"><i class="fa-solid fa-chart-line"></i></div>
+          <div>
+            <div class="head-title">Perspectiva</div>
+            <h3>Económica</h3>
+          </div>
+        </div>
+        <p class="summary">Cómo el sistema de precios, incentivos y producción puede alinearse —o chocar— con los límites planetarios.</p>
+        <ul>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Externalidades:</strong> el precio de mercado rara vez incluye el costo ambiental real (contaminación, deforestación).</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Economía circular:</strong> diseñar productos y procesos donde los residuos de unos son insumos de otros.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Finanzas ESG:</strong> criterios ambientales, sociales y de gobernanza en la inversión.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Decrecimiento / post-crecimiento:</strong> discutir si el PIB puede seguir creciendo en un planeta finito.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Internalización:</strong> impuestos al carbono, sistemas de cap-and-trade y eliminación de subsidios fósiles.</span></li>
+        </ul>
+        <div class="quote">"Quien contamina, paga; quien conserva, recibe." — Principio polluter-pays (OCDE).</div>
+      </div>
+
+      <div class="persp soc">
+        <div class="num">02</div>
+        <div class="head">
+          <div class="ic"><i class="fa-solid fa-handshake-angle"></i></div>
+          <div>
+            <div class="head-title">Perspectiva</div>
+            <h3>Social</h3>
+          </div>
+        </div>
+        <p class="summary">La crisis ecológica no se distribuye de forma pareja: tiene rostro de clase, género, raza y territorio.</p>
+        <ul>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Justicia ambiental:</strong> las comunidades más pobres sufren primero los efectos del cambio climático.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Equidad intergeneracional:</strong> decisiones de hoy hipotecan opciones del mañana.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Saberes indígenas:</strong> prácticas agrícolas y de manejo forestal con siglos de sustentabilidad probada.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Género y sustentabilidad:</strong> las mujeres son más vulnerables a desastres y a la escasez de agua.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Salud pública:</strong> contaminación del aire, agua y suelo como determinantes sociales de la salud.</span></li>
+        </ul>
+        <div class="quote">"No hay justicia social sin justicia ambiental, ni justicia ambiental sin justicia social."</div>
+      </div>
+
+      <div class="persp pol">
+        <div class="num">03</div>
+        <div class="head">
+          <div class="ic"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div>
+            <div class="head-title">Perspectiva</div>
+            <h3>Política</h3>
+          </div>
+        </div>
+        <p class="summary">Las decisiones que regulan la relación sociedad-naturaleza se toman en instituciones — locales y globales.</p>
+        <ul>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Acuerdo de París (2015):</strong> límite de 1.5–2 °C y contribuciones nacionales (NDC).</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Convenio sobre Diversidad Biológica:</strong> metas globales para proteger ecosistemas.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Gobernanza multinivel:</strong> municipio, estado, país, bloque regional, ONU.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Soft law vs. hard law:</strong> desde declaraciones hasta tratados vinculantes.</span></li>
+          <li><i class="fa-solid fa-circle"></i> <span><strong>Democracia ambiental:</strong> acceso a información, participación y justicia (Principio 10, Río 92).</span></li>
+        </ul>
+        <div class="quote">"El ambiente es un bien público global: requiere cooperación, no caridad."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATISTICS -->
+<section id="estadisticas" class="stats">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 2 · Datos y visualizaciones</div>
+      <h2>Los números que sustentan la urgencia</h2>
+      <p class="lead">Elementos visualmente atractivos (tablas, gráficos, datos) que elegí para respaldar la infografía.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="val">+1.1<span>°C</span></div>
+        <div class="lbl">Aumento de temperatura global vs. era preindustrial.</div>
+        <div class="src">NASA GISS, 2023</div>
+      </div>
+      <div class="kpi">
+        <div class="val">1M<span>+</span></div>
+        <div class="lbl">Especies animales y vegetales en riesgo de extinción.</div>
+        <div class="src">IPBES, 2019</div>
+      </div>
+      <div class="kpi">
+        <div class="val">75<span>%</span></div>
+        <div class="lbl">Superficie terrestre significativamente alterada por el hombre.</div>
+        <div class="src">IPBES</div>
+      </div>
+      <div class="kpi">
+        <div class="val">30<span>%</span></div>
+        <div class="lbl">Participación de renovables en la electricidad mundial.</div>
+        <div class="src">IRENA, 2023</div>
+      </div>
+    </div>
+
+    <div class="charts">
+      <div class="chart-card">
+        <h4>Anomalía de temperatura global (°C)</h4>
+        <div class="sub">Desviación respecto al promedio 1951–1980 · NASA GISS</div>
+        <div class="chart-wrap"><canvas id="chartTemp"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>Matriz energética mundial 2023</h4>
+        <div class="sub">Participación por fuente en la generación eléctrica</div>
+        <div class="chart-wrap"><canvas id="chartEnergy"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PADLET -->
+<section id="padlet" class="padlet">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 2 · Lluvia de ideas</div>
+      <h2>Padlet colaborativo del equipo</h2>
+      <p class="lead">Sustituto del Padlet físico: un muro de notas donde cada integrante aporta conceptos, palabras clave o referencias para la infografía. Las notas se guardan localmente en tu navegador.</p>
+    </div>
+
+    <div class="padlet-wall" id="padletWall"></div>
+
+    <form class="padlet-form" id="padletForm" autocomplete="off">
+      <div class="field">
+        <label for="noteText">Aportación</label>
+        <input id="noteText" type="text" maxlength="200" placeholder="Ej. La huella de carbono del software..." required />
+      </div>
+      <div class="field">
+        <label for="noteAuthor">Autor/a</label>
+        <input id="noteAuthor" type="text" maxlength="40" placeholder="Tu nombre" required />
+      </div>
+      <div class="field">
+        <label for="noteColor">Color</label>
+        <select id="noteColor">
+          <option value="c-yellow">Amarillo</option>
+          <option value="c-pink">Rosa</option>
+          <option value="c-mint" selected>Menta</option>
+          <option value="c-sky">Cielo</option>
+          <option value="c-lilac">Lila</option>
+          <option value="c-peach">Durazno</option>
+        </select>
+      </div>
+      <button type="submit"><i class="fa-solid fa-plus"></i> Añadir nota</button>
+    </form>
+  </div>
+</section>
+
+<!-- PODCAST -->
+<section id="podcast" class="podcast">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 2 · Podcast</div>
+      <h2>Episodio: "Sistemas vivos, sistemas políticos"</h2>
+      <p class="lead">Sustituto de Audacity + Anchor. Pulsa el micrófono para grabar tu cápsula de audio directamente en el navegador (Web Audio API + MediaRecorder). Al terminar, podrás reproducirla como un podcast de Anchor.</p>
+    </div>
+
+    <div class="pod-grid">
+      <div class="pod-cover">
+        <div>
+          <div class="ep">EP · 01</div>
+          <h3 style="margin-top:8px;">Sistemas vivos,<br/>sistemas políticos</h3>
+        </div>
+        <div>
+          <div class="meta">Desarrollo Sustentable · 2026</div>
+          <div class="meta" style="margin-top:6px;"><i class="fa-solid fa-microphone"></i> Grabado en navegador</div>
+        </div>
+      </div>
+
+      <div class="pod-body">
+        <div class="pod-script">
+          <h5>Guion sugerido (~2 min)</h5>
+          <p><strong>[Introducción — 20s]</strong> "Hoy hablamos de cómo los sistemas naturales no existen al margen de la política, la economía y la sociedad. Son tres lentes sobre un mismo ecosistema."</p>
+          <p><strong>[Desarrollo — 60s]</strong> "Cuando un bosque se talara para cultivar soja, no solo se pierden árboles: cambia el ciclo del agua, se desplazan comunidades, se altera la balanza comercial de un país y se redefine su política exterior. Eso es desarrollo — sostenible o no — en acción."</p>
+          <p><strong>[Cierre — 20s]</strong> "La pregunta no es si podemos crecer, sino a costa de quién y de qué. Eso lo decidimos juntos, no el mercado ni la naturaleza por separado."</p>
+        </div>
+
+        <div class="pod-controls">
+          <div class="pod-row">
+            <button class="rec-btn" id="recBtn"><i class="fa-solid fa-circle"></i> <span id="recLabel">Grabar</span></button>
+            <button class="play-btn" id="playBtn" disabled><i class="fa-solid fa-play"></i> Reproducir</button>
+            <button class="play-btn" id="downloadBtn" disabled><i class="fa-solid fa-download"></i> Descargar .webm</button>
+            <div class="pod-status" id="podStatus"><span class="dot"></span><span id="statusText">Listo para grabar</span></div>
+          </div>
+          <audio id="audioPlayer" controls style="width:100%; display:none;"></audio>
+          <div class="pod-tips"><i class="fa-solid fa-circle-info"></i> Tu navegador pedirá permiso para usar el micrófono. El audio se guarda <strong>en este equipo</strong>; nada se sube a internet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION / TAREA 3 -->
+<section id="presentacion" class="reflection">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Tarea 3 · Presentación y reflexión</div>
+      <h2>Lo que nos llevamos de la discusión</h2>
+      <p class="lead">La presentación de mi equipo sintetiza las tres perspectivas. La reflexión sobre los demás equipos enriqueció —y a veces confrontó— nuestras propias conclusiones.</p>
+    </div>
+
+    <div class="ref-grid">
+      <div class="ref-card">
+        <h4><i class="fa-solid fa-bullhorn"></i> Nuestra presentación en una frase</h4>
+        <p>El desarrollo sostenible no es un ideal ambiental: es un <em>contrato político</em> entre generaciones, sectores y territorios, mediado por la economía.</p>
+        <textarea placeholder="Personaliza esta conclusión con tus propias palabras..."></textarea>
+      </div>
+      <div class="ref-card">
+        <h4><i class="fa-solid fa-scale-balanced"></i> ¿Qué postura asumiría el equipo?</h4>
+        <p>¿Crecimiento verde, decrecimiento, eco-socialismo, economía circular? Anota la postura defendida y el argumento principal que la sostiene.</p>
+        <textarea placeholder="Postura defendida + argumento..."></textarea>
+      </div>
+      <div class="ref-card">
+        <h4><i class="fa-solid fa-comments"></i> Aprendido de otros equipos</h4>
+        <p>¿Qué perspectiva te hizo cambiar de opinión o reforzar tu postura? Sé específico: nombra el equipo y la idea.</p>
+        <textarea placeholder="Idea que te pareció más fuerte o que rechazas..."></textarea>
+      </div>
+      <div class="ref-card">
+        <h4><i class="fa-solid fa-seedling"></i> Compromiso personal / grupal</h4>
+        <p>Una acción concreta que, como estudiante de ingeniería de software, podemos implementar para reducir nuestra huella socioambiental.</p>
+        <textarea placeholder="Ej. medir la huella de carbono de nuestro software..."></textarea>
+      </div>
+    </div>
+
+    <div class="peer-section">
+      <h3>Otras presentaciones de la clase</h3>
+      <div class="peer-grid">
+        <div class="peer">
+          <div class="label">Equipo A</div>
+          <h5>Energía y geopolítica</h5>
+          <p>Relacionaron la dependencia del gas ruso con el alza de renovables en Europa post-2022.</p>
+          <div class="tags"><span class="tag">Geopolítica</span><span class="tag">Energía</span></div>
+        </div>
+        <div class="peer">
+          <div class="label">Equipo B</div>
+          <h5>Moda y agua</h5>
+          <p>Cuantificaron los litros de agua necesarios para una playera de algodón y propusieron fibras alternativas.</p>
+          <div class="tags"><span class="tag">Consumo</span><span class="tag">Agua</span></div>
+        </div>
+        <div class="peer">
+          <div class="label">Equipo C</div>
+          <h5>Movimientos socioambientales</h5>
+          <p>Estudiaron cómo los jóvenes latinoamericanos articulan demandas climáticas con justicia social.</p>
+          <div class="tags"><span class="tag">Activismo</span><span class="tag">Latinoamérica</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="grid">
+      <div>
+        <h5>Sobre el proyecto</h5>
+        <p>Entrega estática de la materia <strong>Desarrollo Sustentable</strong>. Construida con HTML, CSS, JavaScript y librerías CDN — sin instalación, sin backend, sin rastreo. Funciona offline una vez cargada.</p>
+      </div>
+      <div>
+        <h5>Fuentes</h5>
+        <ul>
+          <li>Informe Brundtland (ONU, 1987)</li>
+          <li>IPBES · Resumen para policymakers (2019)</li>
+          <li>NASA GISS Surface Temperature Analysis</li>
+          <li>IRENA · Renewables Global Status Report</li>
+          <li>Acuerdo de París · CMNUCC (2015)</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Stack técnico</h5>
+        <ul>
+          <li>HTML5 + CSS3 (variables, grid, flex)</li>
+          <li>Google Fonts · Fraunces & Inter</li>
+          <li>Font Awesome 6 (CDN)</li>
+          <li>Chart.js 4 (CDN)</li>
+          <li>MediaRecorder API + Web Audio</li>
+          <li>localStorage (muro de notas)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© 2026 · Actividad Formativa · Desarrollo Sustentable</span>
+      <span>Hecho con <i class="fa-solid fa-leaf" style="color:var(--leaf-300);"></i> en un navegador</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ========== CHARTS ========== */
+const palette = ['#2f8a5a', '#143324', '#ee9b00', '#277da1', '#b08a5b', '#c1442e', '#7fc4a0'];
+
+new Chart(document.getElementById('chartTemp'), {
+  type: 'line',
+  data: {
+    labels: ['1880','1900','1920','1940','1960','1980','2000','2010','2015','2020','2023'],
+    datasets: [{
+      label: 'Anomalía (°C)',
+      data: [-0.16,-0.08,-0.27,-0.03,-0.03,0.26,0.40,0.72,0.90,1.02,1.17],
+      borderColor: palette[0],
+      backgroundColor: 'rgba(47,138,90,0.15)',
+      tension: 0.35,
+      fill: true,
+      pointRadius: 3,
+      pointBackgroundColor: palette[1]
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#143324' } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#5b6b62' } },
+      x: { grid: { display: false }, ticks: { color: '#5b6b62', maxRotation: 0 } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartEnergy'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Carbón','Gas natural','Renovables','Nuclear','Petróleo'],
+    datasets: [{
+      data: [36, 22, 30, 9, 3],
+      backgroundColor: ['#3a3a3a', palette[3], palette[0], palette[4], palette[5]],
+      borderColor: '#fffdf7', borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#5b6b62', font: { size: 12 }, padding: 14 } },
+      tooltip: { backgroundColor: '#143324' }
+    }
+  }
+});
+
+/* ========== PADLET ========== */
+const STORAGE_KEY = 'sustentable_padlet_v1';
+const defaultNotes = [
+  { text: 'Servicios ecosistémicos: regulación hídrica, polinización, fijación de carbono.', author: 'Ana', color: 'c-yellow', rot: -1.5 },
+  { text: 'Dato clave: el 70% de las emisiones globales vienen de solo 100 empresas.', author: 'Luis', color: 'c-pink', rot: 1.2 },
+  { text: 'Pensar el software como insumo energético: la nube también contamina.', author: 'María', color: 'c-mint', rot: -0.8 },
+  { text: 'Principio "quien contamina, paga" — impuestos al carbono.', author: 'Diego', color: 'c-sky', rot: 1.6 },
+  { text: 'Saberes indígenas: la milpa maya como ejemplo de policultivo sostenible.', author: 'Sofía', color: 'c-lilac', rot: -1.2 },
+  { text: 'Acuerdo de París: 1.5 °C como límite, NDC como instrumento.', author: 'Pedro', color: 'c-peach', rot: 0.9 },
+  { text: 'Justicia ambiental: los más afectados son los que menos contaminan.', author: 'Carla', color: 'c-mint', rot: -0.5 },
+  { text: 'Huella hídrica de la industria textil: 2,700 L por camiseta.', author: 'Mateo', color: 'c-yellow', rot: 1.4 }
+];
+
+function loadNotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultNotes; }
+  catch { return defaultNotes; }
+}
+function saveNotes(notes) { localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); }
+
+function renderNotes() {
+  const wall = document.getElementById('padletWall');
+  const notes = loadNotes();
+  wall.innerHTML = notes.map((n, i) => `
+    <div class="note ${n.color}" style="--rot:${n.rot || 0}deg;">
+      <button class="del" data-i="${i}" title="Eliminar"><i class="fa-solid fa-xmark"></i></button>
+      ${escapeHTML(n.text)}
+      <span class="author">— ${escapeHTML(n.author)}</span>
+    </div>
+  `).join('');
+  wall.querySelectorAll('.del').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const idx = +btn.dataset.i;
+      const notes = loadNotes();
+      notes.splice(idx, 1);
+      saveNotes(notes);
+      renderNotes();
+    });
+  });
+}
+
+function escapeHTML(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+document.getElementById('padletForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const text = document.getElementById('noteText').value.trim();
+  const author = document.getElementById('noteAuthor').value.trim();
+  const color = document.getElementById('noteColor').value;
+  if (!text || !author) return;
+  const notes = loadNotes();
+  notes.unshift({ text, author, color, rot: (Math.random() * 3 - 1.5).toFixed(1) });
+  saveNotes(notes);
+  renderNotes();
+  e.target.reset();
+});
+
+renderNotes();
+
+/* ========== PODCAST RECORDER ========== */
+const recBtn = document.getElementById('recBtn');
+const recLabel = document.getElementById('recLabel');
+const playBtn = document.getElementById('playBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const audioPlayer = document.getElementById('audioPlayer');
+const podStatus = document.getElementById('podStatus');
+const statusText = document.getElementById('statusText');
+
+let mediaRecorder = null;
+let audioChunks = [];
+let audioBlob = null;
+let audioUrl = null;
+let isRecording = false;
+
+function setStatus(state, text) {
+  podStatus.classList.remove('live', 'ready');
+  if (state) podStatus.classList.add(state);
+  statusText.textContent = text;
+}
+
+recBtn.addEventListener('click', async () => {
+  if (isRecording) {
+    mediaRecorder.stop();
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioUrl = URL.createObjectURL(audioBlob);
+      audioPlayer.src = audioUrl;
+      audioPlayer.style.display = 'block';
+      playBtn.disabled = false;
+      downloadBtn.disabled = false;
+      setStatus('ready', 'Grabación lista · ' + Math.round(audioBlob.size / 1024) + ' KB');
+      recBtn.classList.remove('recording');
+      recLabel.textContent = 'Grabar de nuevo';
+      isRecording = false;
+    };
+    mediaRecorder.start();
+    isRecording = true;
+    recBtn.classList.add('recording');
+    recLabel.textContent = 'Detener';
+    setStatus('live', 'Grabando…');
+  } catch (err) {
+    setStatus(null, 'Permiso denegado o micrófono no disponible: ' + err.message);
+  }
+});
+
+playBtn.addEventListener('click', () => {
+  if (!audioUrl) return;
+  audioPlayer.style.display = 'block';
+  audioPlayer.play();
+});
+
+downloadBtn.addEventListener('click', () => {
+  if (!audioBlob) return;
+  const a = document.createElement('a');
+  a.href = audioUrl;
+  a.download = 'podcast-sustentable-' + Date.now() + '.webm';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+</script>
+</body>
+</html>
