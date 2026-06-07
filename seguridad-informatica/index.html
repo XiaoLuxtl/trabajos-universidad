@@ -7,17 +7,18 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: #f8fafc; color: #0f172a; }
+  html, body { background: #fafafa; color: #1f2937; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.55; padding: 36px 16px 56px; }
   .wrap { max-width: 1280px; margin: 0 auto; }
+
   header { text-align: center; margin-bottom: 28px; }
   .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #4338ca; background: #eef2ff; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; }
-  h1 { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; letter-spacing: -0.02em; color: #1e1b4b; margin-bottom: 6px; }
-  .sub { font-size: 14px; color: #64748b; max-width: 720px; margin: 0 auto; }
+  h1 { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; letter-spacing: -0.02em; color: #312e81; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #6b7280; max-width: 720px; margin: 0 auto; }
 
-  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 28px; box-shadow: 0 4px 24px -10px rgba(15, 23, 42, 0.08); margin-bottom: 22px; }
-  .card h2 { font-size: 18px; color: #1e1b4b; margin-bottom: 4px; }
-  .card .hsub { font-size: 13px; color: #64748b; margin-bottom: 18px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 28px; box-shadow: 0 4px 24px -10px rgba(15, 23, 42, 0.06); margin-bottom: 22px; }
+  .card h2 { font-size: 18px; color: #312e81; margin-bottom: 4px; }
+  .card .hsub { font-size: 13px; color: #6b7280; margin-bottom: 18px; }
 
   .map-main { min-height: 640px; overflow: hidden; }
   .map-main .mermaid { display: flex; justify-content: center; cursor: grab; }
@@ -26,20 +27,19 @@
 
   .map-rel { min-height: 320px; }
 
-  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #475569; justify-content: center; padding: 14px 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 18px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #4b5563; justify-content: center; padding: 16px 20px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; margin-top: 18px; }
   .legend .item { display: flex; align-items: center; gap: 7px; }
-  .legend .sw { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
-  .legend .sw.root { background: #1e1b4b; }
-  .legend .sw.branch { background: #4338ca; }
-  .legend .sw.concept { background: #eef2ff; }
-  .legend .sw.threat { background: #fee2e2; }
-  .legend .sw.auth { background: #d1fae5; }
-  .legend .ln { display: inline-block; min-width: 24px; height: 0; border-top: 2px solid #4338ca; }
-  .legend .ln.cross { border-top-style: dashed; border-color: #dc2626; }
+  .legend .sw { width: 18px; height: 18px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.08); }
+  .legend .sw.root { background: #818cf8; }
+  .legend .sw.prin { background: #A7C7E7; }
+  .legend .sw.ame { background: #F4A6A6; }
+  .legend .sw.aut { background: #A8D5BA; }
+  .legend .sw.pre { background: #F5D78E; }
+  .legend .ln { display: inline-block; min-width: 24px; height: 0; border-top: 2px solid #6366f1; }
 
-  .tip { font-size: 12px; color: #94a3b8; text-align: center; margin-top: 10px; font-style: italic; }
+  .tip { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 10px; font-style: italic; }
 
-  footer { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 22px; }
+  footer { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 22px; }
 
   @media (max-width: 720px) {
     .card { padding: 20px; }
@@ -47,7 +47,7 @@
   }
   @media print {
     body { padding: 0; background: #fff; }
-    .card { box-shadow: none; border: 1px solid #cbd5e1; page-break-inside: avoid; }
+    .card { box-shadow: none; border: 1px solid #d1d5db; page-break-inside: avoid; }
     .legend { box-shadow: none; }
   }
 </style>
@@ -63,44 +63,58 @@
   <!-- MAPA PRINCIPAL: MINDMAP (radial, espacioso) -->
   <div class="card map-main">
     <h2>Mapa principal · Jerarquía de conceptos</h2>
-    <div class="hsub">Vista radial. De lo general (centro) a lo específico (extremos).</div>
+    <div class="hsub">Vista radial. De lo general (centro) a lo específico (extremos). Cada rama usa un color pastel distinto.</div>
     <div class="mermaid">
 mindmap
-  root((Seguridad Informatica))
-    Principios
-      Triada CIA
-        Confidencialidad
-        Integridad
-        Disponibilidad
-    Amenazas
-      Malware
-        Virus
-        Ransomware
-        Troyanos
-      Phishing
-      Ingenieria Social
-      Fuerza Bruta
-      Man in the Middle
-    Autenticacion
-      Factor Conocimiento
-        Contrasena
-        PIN
-      Factor Posesion
-        Token
-        Tarjeta Inteligente
-      Factor Biometrico
-        Huella Digital
-        Reconocimiento Facial
-      Multifactor MFA
-    Mecanismos Preventivos
-      Cifrado
-      Firewalls
-      Antivirus y EDR
-      Control de Acceso
-      Gestion de Parches
-      Copias de Seguridad
-      Politicas de Seguridad
-      Concienciacion del Usuario
+  classDef root fill:#818cf8,color:#fff,stroke:#4f46e5,stroke-width:3px
+  classDef prinB fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5,stroke-width:2px
+  classDef prinC fill:#D4E4F4,color:#1e3a5f,stroke:#A7C7E7
+  classDef ameB fill:#F4A6A6,color:#7d2c2c,stroke:#C77575,stroke-width:2px
+  classDef ameC fill:#FBD5D5,color:#7d2c2c,stroke:#F4A6A6
+  classDef autB fill:#A8D5BA,color:#1e5e3a,stroke:#75B491,stroke-width:2px
+  classDef autC fill:#D4ECDD,color:#1e5e3a,stroke:#A8D5BA
+  classDef preB fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C,stroke-width:2px
+  classDef preC fill:#FBEAC4,color:#7d5c1a,stroke:#F5D78E
+
+  ((Seguridad Informatica)):::root
+
+    Principios:::prinB
+      Triada CIA:::prinC
+        Confidencialidad:::prinC
+        Integridad:::prinC
+        Disponibilidad:::prinC
+
+    Amenazas:::ameB
+      Malware:::ameC
+        Virus:::ameC
+        Ransomware:::ameC
+        Troyanos:::ameC
+      Phishing:::ameC
+      Ingenieria Social:::ameC
+      Fuerza Bruta:::ameC
+      Man in the Middle:::ameC
+
+    Autenticacion:::autB
+      Factor Conocimiento:::autC
+        Contrasena:::autC
+        PIN:::autC
+      Factor Posesion:::autC
+        Token:::autC
+        Tarjeta Inteligente:::autC
+      Factor Biometrico:::autC
+        Huella Digital:::autC
+        Reconocimiento Facial:::autC
+      Multifactor MFA:::autC
+
+    Mecanismos Preventivos:::preB
+      Cifrado:::preC
+      Firewalls:::preC
+      Antivirus y EDR:::preC
+      Control de Acceso:::preC
+      Gestion de Parches:::preC
+      Copias de Seguridad:::preC
+      Politicas de Seguridad:::preC
+      Concienciacion del Usuario:::preC
     </div>
     <p class="tip">Arrastra el mapa para desplazarlo si no cabe en pantalla.</p>
   </div>
@@ -108,41 +122,43 @@ mindmap
   <!-- MAPA DE RELACIONES: solo las conexiones cruzadas -->
   <div class="card map-rel">
     <h2>Mapa de relaciones · Cómo se conectan las ramas</h2>
-    <div class="hsub">Las cuatro ramas no son independientes: se influyen entre sí. Esta vista muestra las relaciones clave.</div>
+    <div class="hsub">Las cuatro ramas no son independientes: se influyen entre sí. Esta vista muestra las relaciones clave, con el mismo código de color que el mapa principal.</div>
     <div class="mermaid">
 flowchart LR
-  classDef rama fill:#eef2ff,color:#1e1b4b,stroke:#4338ca,stroke-width:2px,font-weight:bold
-  classDef accion fill:#d1fae5,color:#065f46,stroke:#10b981
-  classDef mal fill:#fee2e2,color:#991b1b,stroke:#dc2626
+  classDef prinNode fill:#A7C7E7,color:#1e3a5f,stroke:#6B95C5,stroke-width:2px
+  classDef ameNode fill:#F4A6A6,color:#7d2c2c,stroke:#C77575,stroke-width:2px
+  classDef autNode fill:#A8D5BA,color:#1e5e3a,stroke:#75B491,stroke-width:2px
+  classDef preNode fill:#F5D78E,color:#7d5c1a,stroke:#C5A55C,stroke-width:2px
+  classDef ctrlNode fill:#D4ECDD,color:#1e5e3a,stroke:#A8D5BA
+  classDef malNode fill:#FBD5D5,color:#7d2c2c,stroke:#F4A6A6
 
-  P["Principios CIA"]:::rama
-  A["Amenazas"]:::rama
-  AU["Autenticacion"]:::rama
-  MP["Mecanismos Preventivos"]:::rama
+  P["Principios CIA"]:::prinNode
+  A["Amenazas"]:::ameNode
+  AU["Autenticacion"]:::autNode
+  MP["Mecanismos Preventivos"]:::preNode
 
   A -->|atentan contra| P
   MP -->|mitigan| A
   AU -->|verifica identidad para| P
   MP -->|reforzan| P
-  C["Cifrado"]:::accion
+  C["Cifrado"]:::ctrlNode
   C -->|protege| P
-  CAP["Concienciacion"]:::accion
+  CAP["Concienciacion"]:::ctrlNode
   CAP -->|reduce| A
-  PH["Phishing"]:::mal
+  PH["Phishing"]:::malNode
   CAP -->|previene| PH
-  MFA["MFA"]:::accion
+  MFA["MFA"]:::ctrlNode
   MFA -->|frena| A
     </div>
   </div>
 
   <div class="legend">
-    <div class="item"><span class="sw root"></span> Concepto raíz</div>
-    <div class="item"><span class="sw branch"></span> Rama (nivel 1)</div>
-    <div class="item"><span class="sw concept"></span> Concepto</div>
-    <div class="item"><span class="sw threat"></span> Amenaza</div>
-    <div class="item"><span class="sw auth"></span> Medida / control</div>
-    <div class="item"><span class="ln"></span> Relación directa</div>
-    <div class="item"><span class="ln cross"></span> Influencia cruzada</div>
+    <div class="item"><span class="sw root"></span> Raíz</div>
+    <div class="item"><span class="sw prin"></span> Principios</div>
+    <div class="item"><span class="sw ame"></span> Amenazas</div>
+    <div class="item"><span class="sw aut"></span> Autenticación</div>
+    <div class="item"><span class="sw pre"></span> Mecanismos Preventivos</div>
+    <div class="item"><span class="ln"></span> Relación entre conceptos</div>
   </div>
 
   <footer>Técnica 81 · Mapa conceptual · 100 Técnicas Didácticas (UnADM)</footer>
@@ -160,11 +176,11 @@ flowchart LR
     themeVariables: {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       fontSize: '14px',
-      primaryColor: '#eef2ff',
-      primaryTextColor: '#1e1b4b',
-      primaryBorderColor: '#4338ca',
-      lineColor: '#4338ca',
-      secondaryColor: '#f1f5f9',
+      primaryColor: '#D4E4F4',
+      primaryTextColor: '#1e3a5f',
+      primaryBorderColor: '#A7C7E7',
+      lineColor: '#94a3b8',
+      secondaryColor: '#FBEAC4',
       tertiaryColor: '#fff'
     },
     securityLevel: 'loose'
