@@ -8,15 +8,25 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #f8fafc; color: #0f172a; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.55; padding: 32px 16px 48px; }
-  .wrap { max-width: 1180px; margin: 0 auto; }
-  header { text-align: center; margin-bottom: 22px; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.55; padding: 36px 16px 56px; }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 28px; }
   .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #4338ca; background: #eef2ff; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; }
-  h1 { font-size: clamp(24px, 3.4vw, 36px); font-weight: 800; letter-spacing: -0.02em; color: #1e1b4b; margin-bottom: 4px; }
-  .sub { font-size: 14px; color: #64748b; }
-  .map { background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 28px; box-shadow: 0 4px 24px -10px rgba(15, 23, 42, 0.08); overflow-x: auto; }
-  .map .mermaid { text-align: center; }
-  .legend { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #475569; justify-content: center; padding: 14px 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; }
+  h1 { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; letter-spacing: -0.02em; color: #1e1b4b; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #64748b; max-width: 720px; margin: 0 auto; }
+
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 28px; box-shadow: 0 4px 24px -10px rgba(15, 23, 42, 0.08); margin-bottom: 22px; }
+  .card h2 { font-size: 18px; color: #1e1b4b; margin-bottom: 4px; }
+  .card .hsub { font-size: 13px; color: #64748b; margin-bottom: 18px; }
+
+  .map-main { min-height: 640px; overflow: hidden; }
+  .map-main .mermaid { display: flex; justify-content: center; cursor: grab; }
+  .map-main .mermaid:active { cursor: grabbing; }
+  .map-main .mermaid svg { max-width: 100%; height: auto; }
+
+  .map-rel { min-height: 320px; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #475569; justify-content: center; padding: 14px 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 18px; }
   .legend .item { display: flex; align-items: center; gap: 7px; }
   .legend .sw { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
   .legend .sw.root { background: #1e1b4b; }
@@ -24,12 +34,20 @@
   .legend .sw.concept { background: #eef2ff; }
   .legend .sw.threat { background: #fee2e2; }
   .legend .sw.auth { background: #d1fae5; }
-  .legend .ln { display: inline-block; min-width: 22px; height: 0; border-top: 2px solid #94a3b8; }
-  .legend .ln.dot { border-top-style: dotted; }
+  .legend .ln { display: inline-block; min-width: 24px; height: 0; border-top: 2px solid #4338ca; }
+  .legend .ln.cross { border-top-style: dashed; border-color: #dc2626; }
+
+  .tip { font-size: 12px; color: #94a3b8; text-align: center; margin-top: 10px; font-style: italic; }
+
   footer { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 22px; }
+
+  @media (max-width: 720px) {
+    .card { padding: 20px; }
+    .map-main { min-height: 480px; }
+  }
   @media print {
     body { padding: 0; background: #fff; }
-    .map { box-shadow: none; border: 1px solid #cbd5e1; }
+    .card { box-shadow: none; border: 1px solid #cbd5e1; page-break-inside: avoid; }
     .legend { box-shadow: none; }
   }
 </style>
@@ -39,74 +57,92 @@
   <header>
     <div class="eyebrow">Mapa Conceptual · Técnica 81</div>
     <h1>Fundamentos de la Seguridad Informática</h1>
-    <div class="sub">Conceptos clave, relaciones y jerarquía</div>
+    <p class="sub">Organización jerárquica de conceptos (mapa principal) y relaciones entre las cuatro ramas (mapa de relaciones).</p>
   </header>
 
-  <div class="map">
+  <!-- MAPA PRINCIPAL: MINDMAP (radial, espacioso) -->
+  <div class="card map-main">
+    <h2>Mapa principal · Jerarquía de conceptos</h2>
+    <div class="hsub">Vista radial. De lo general (centro) a lo específico (extremos).</div>
     <div class="mermaid">
-flowchart TB
-  classDef root fill:#1e1b4b,color:#fff,stroke:#1e1b4b,stroke-width:3px,font-weight:bold
-  classDef branch fill:#4338ca,color:#fff,stroke:#312e81,stroke-width:2px,font-weight:bold
-  classDef concept fill:#eef2ff,color:#1e1b4b,stroke:#6366f1
-  classDef threat fill:#fee2e2,color:#991b1b,stroke:#dc2626
-  classDef auth fill:#d1fae5,color:#065f46,stroke:#10b981
+mindmap
+  root(((Seguridad Informática)))
+    Principios
+      Triada CIA
+        Confidencialidad
+        Integridad
+        Disponibilidad
+    Amenazas
+      Malware
+        Virus
+        Ransomware
+        Troyanos
+      Phishing
+      Ingeniería Social
+      Fuerza Bruta
+      Man in the Middle
+    Autenticación
+      Factor Conocimiento
+        Contraseña
+        PIN
+      Factor Posesión
+        Token
+        Tarjeta Inteligente
+      Factor Biométrico
+        Huella Digital
+        Reconocimiento Facial
+      Multifactor MFA
+    Mecanismos Preventivos
+      Cifrado
+      Firewalls
+      Antivirus y EDR
+      Control de Acceso
+      Gestión de Parches
+      Copias de Seguridad
+      Políticas de Seguridad
+      Concienciación del Usuario
+    </div>
+    <p class="tip">Arrastra el mapa para desplazarlo si no cabe en pantalla.</p>
+  </div>
 
-  S["Seguridad Informatica"]:::root
+  <!-- MAPA DE RELACIONES: solo las conexiones cruzadas -->
+  <div class="card map-rel">
+    <h2>Mapa de relaciones · Cómo se conectan las ramas</h2>
+    <div class="hsub">Las cuatro ramas no son independientes: se influyen entre sí. Esta vista muestra las relaciones clave.</div>
+    <div class="mermaid">
+flowchart LR
+  classDef rama fill:#eef2ff,color:#1e1b4b,stroke:#4338ca,stroke-width:2px,font-weight:bold
+  classDef accion fill:#d1fae5,color:#065f46,stroke:#10b981
+  classDef mal fill:#fee2e2,color:#991b1b,stroke:#dc2626
 
-  S ==>|"se basa en"| P["Principios (Triada CIA)"]:::branch
-  P --> C["Confidencialidad"]:::concept
-  P --> I["Integridad"]:::concept
-  P --> D["Disponibilidad"]:::concept
+  P["Principios CIA"]:::rama
+  A["Amenazas"]:::rama
+  AU["Autenticación"]:::rama
+  MP["Mecanismos Preventivos"]:::rama
 
-  S ==>|"enfrenta"| A["Amenazas"]:::branch
-  A --> M["Malware"]:::threat
-  M --> V["Virus"]:::threat
-  M --> R["Ransomware"]:::threat
-  M --> T["Troyanos"]:::threat
-  A --> PH["Phishing"]:::threat
-  A --> IS["Ingenieria Social"]:::threat
-  A --> FB["Fuerza Bruta"]:::threat
-  A --> MI["Man-in-the-Middle"]:::threat
-
-  S ==>|"requiere"| AU["Autenticacion"]:::branch
-  AU --> CK["Factor Conocimiento"]:::auth
-  CK --> PA["Contrasena"]:::auth
-  CK --> PI["PIN"]:::auth
-  AU --> PO["Factor Posesion"]:::auth
-  PO --> TK["Token / OTP"]:::auth
-  PO --> TA["Tarjeta Inteligente"]:::auth
-  AU --> FBIO["Factor Biometrico"]:::auth
-  FBIO --> HU["Huella Digital"]:::auth
-  FBIO --> FA["Reconocimiento Facial"]:::auth
-  AU --> MFA["Multifactor (MFA)"]:::auth
-
-  S ==>|"implementa"| MP["Mecanismos Preventivos"]:::branch
-  MP --> CI["Cifrado"]:::concept
-  MP --> FW["Firewalls"]:::concept
-  MP --> AV["Antivirus / EDR"]:::concept
-  MP --> AC["Control de Acceso"]:::concept
-  MP --> GP["Gestion de Parches"]:::concept
-  MP --> BS["Copias de Seguridad"]:::concept
-  MP --> PO2["Politicas de Seguridad"]:::concept
-  MP --> CAP["Concienciacion del Usuario"]:::concept
-
-  A -.->|"atentan contra"| P
-  MP -.->|"mitigan"| A
-  AU -.->|"verifica identidad para"| C
-  CI -.->|"protege"| C
-  CI -.->|"protege"| I
-  CAP -.->|"reduce"| IS
+  A --"atentan contra"--> P
+  MP --"mitigan"--> A
+  AU --"verifica identidad para"--> P
+  MP --"reforzan"--> P
+  C["Cifrado"]:::accion
+  C --"protege"--> P
+  CAP["Concienciación"]:::accion
+  CAP --"reduce"--> A
+  PH["Phishing"]:::mal
+  CAP --"previene"--> PH
+  MFA["MFA"]:::accion
+  MFA --"frena"--> A
     </div>
   </div>
 
   <div class="legend">
     <div class="item"><span class="sw root"></span> Concepto raíz</div>
-    <div class="item"><span class="sw branch"></span> Rama principal</div>
-    <div class="item"><span class="sw concept"></span> Concepto / mecanismo</div>
+    <div class="item"><span class="sw branch"></span> Rama (nivel 1)</div>
+    <div class="item"><span class="sw concept"></span> Concepto</div>
     <div class="item"><span class="sw threat"></span> Amenaza</div>
-    <div class="item"><span class="sw auth"></span> Autenticación</div>
-    <div class="item"><span class="ln"></span> Relación jerárquica (con palabra enlace)</div>
-    <div class="item"><span class="ln dot"></span> Relación cruzada entre ramas</div>
+    <div class="item"><span class="sw auth"></span> Medida / control</div>
+    <div class="item"><span class="ln"></span> Relación directa</div>
+    <div class="item"><span class="ln cross"></span> Influencia cruzada</div>
   </div>
 
   <footer>Técnica 81 · Mapa conceptual · 100 Técnicas Didácticas (UnADM)</footer>
@@ -116,6 +152,11 @@ flowchart TB
   mermaid.initialize({
     startOnLoad: true,
     theme: 'base',
+    mindmap: {
+      padding: 30,
+      maxNodeWidth: 220
+    },
+    flowchart: { curve: 'basis', padding: 14, htmlLabels: true, useMaxWidth: true },
     themeVariables: {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       fontSize: '14px',
@@ -126,7 +167,6 @@ flowchart TB
       secondaryColor: '#f1f5f9',
       tertiaryColor: '#fff'
     },
-    flowchart: { curve: 'basis', padding: 14, htmlLabels: true, useMaxWidth: true },
     securityLevel: 'loose'
   });
 </script>
