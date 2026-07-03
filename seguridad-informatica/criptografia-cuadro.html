@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algoritmos Criptográficos · Comparativa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:#0f172a;
+    color:#e2e8f0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:2rem 1rem
+  }
+  .container{max-width:1200px;width:100%}
+  h1{
+    font-size:2.2rem;
+    font-weight:600;
+    background:linear-gradient(135deg,#818cf8,#38bdf8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:.3rem
+  }
+  .sub{color:#94a3b8;font-size:.95rem;margin-bottom:2rem}
+  .filters{
+    display:flex;
+    gap:.6rem;
+    flex-wrap:wrap;
+    margin-bottom:1.5rem
+  }
+  .filters button,.filters select{
+    background:#1e293b;
+    border:1px solid #334155;
+    color:#e2e8f0;
+    padding:.5rem 1rem;
+    border-radius:8px;
+    font-size:.85rem;
+    cursor:pointer;
+    transition:.2s;
+    font-family:inherit
+  }
+  .filters button:hover,.filters select:hover{background:#334155;border-color:#6366f1}
+  .filters button.active{background:#6366f1;border-color:#6366f1;color:#fff}
+  .filters select{appearance:none;padding-right:2rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center}
+  .table-wrap{
+    overflow-x:auto;
+    border-radius:12px;
+    border:1px solid #1e293b;
+    background:#0f172a
+  }
+  table{width:100%;border-collapse:collapse;font-size:.875rem;min-width:700px}
+  thead{position:sticky;top:0;z-index:2}
+  thead th{
+    background:#1e293b;
+    padding:.85rem .75rem;
+    text-align:left;
+    font-weight:600;
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:#94a3b8;
+    white-space:nowrap;
+    border-bottom:2px solid #334155;
+    cursor:pointer;
+    user-select:none;
+    position:relative
+  }
+  thead th:hover{color:#818cf8}
+  thead th .arrow{font-size:.65rem;margin-left:.35rem;opacity:.5}
+  tbody tr{
+    transition:background .15s;
+    border-bottom:1px solid #1e293b
+  }
+  tbody tr:hover{background:#1e293b}
+  tbody td{padding:.75rem;vertical-align:top;color:#cbd5e1}
+  tbody td:first-child{font-weight:600;color:#f1f5f9}
+  .badge{
+    display:inline-block;
+    padding:.2rem .6rem;
+    border-radius:6px;
+    font-size:.75rem;
+    font-weight:600;
+    letter-spacing:.02em
+  }
+  .b-sim{background:#1e3a5f;color:#93c5fd}
+  .b-asim{background:#5f1e1e;color:#fca5a5}
+  .b-hash{background:#1e5f2e;color:#86efac}
+  .bar-wrap{display:flex;align-items:center;gap:.5rem}
+  .bar{
+    height:6px;
+    border-radius:3px;
+    flex-shrink:0;
+    transition:width .4s ease
+  }
+  .bar-fast{background:linear-gradient(90deg,#22c55e,#4ade80)}
+  .bar-mid{background:linear-gradient(90deg,#eab308,#facc15)}
+  .bar-slow{background:linear-gradient(90deg,#ef4444,#f87171)}
+  .tag{
+    display:inline-block;
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:4px;
+    padding:.1rem .45rem;
+    font-size:.7rem;
+    margin:.1rem .15rem;
+    color:#94a3b8
+  }
+  .tag:hover{background:#334155;color:#e2e8f0;cursor:default}
+  .count-row{
+    font-size:.8rem;
+    color:#64748b;
+    margin-top:.75rem;
+    text-align:right
+  }
+  @media(max-width:640px){
+    body{padding:1rem .6rem}
+    h1{font-size:1.5rem}
+    table{font-size:.8rem}
+    thead th,.tbody td{padding:.5rem}
+  }
+  .fade-in{animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Algoritmos Criptográficos</h1>
+  <p class="sub">Comparativa de velocidad, seguridad y casos de uso</p>
+
+  <div class="filters">
+    <button class="active" data-filter="all">Todos</button>
+    <button data-filter="sim">Simétricos</button>
+    <button data-filter="asim">Asimétricos</button>
+    <button data-filter="hash">Hash</button>
+    <select id="sortSelect">
+      <option value="">Ordenar por…</option>
+      <option value="name">Nombre</option>
+      <option value="speed-desc">Velocidad ↑</option>
+      <option value="speed-asc">Velocidad ↓</option>
+      <option value="key">Tamaño de clave</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table id="comparativa">
+      <thead>
+        <tr>
+          <th data-col="name">Algoritmo <span class="arrow">↕</span></th>
+          <th data-col="type">Tipo <span class="arrow">↕</span></th>
+          <th data-col="key">Clave / Salida <span class="arrow">↕</span></th>
+          <th data-col="speed">Velocidad <span class="arrow">↕</span></th>
+          <th>Seguridad</th>
+          <th>Casos de uso</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="count-row" id="countRow">Mostrando 0 algoritmos</div>
+</div>
+
+<script>
+const DATA = [
+  {name:"AES", type:"sim", typeLabel:"Simétrico", key:"128 / 192 / 256 bits", speed:95, speedLabel:"Muy alta", security:"Estándar NIST. Resistente a criptoanálisis. AES-NI en hardware.", uses:["Cifrado de discos","VPN (IPsec)","TLS","WPA2/3","BitLocker","LUKS"]},
+  {name:"ChaCha20", type:"sim", typeLabel:"Simétrico", key:"256 bits", speed:96, speedLabel:"Muy alta", security:"Alternativa moderna a AES. Superior en software sin AES-NI. Usada en TLS 1.3.", uses:["TLS 1.3","WireGuard","Signal","OpenSSH","ChaCha20-Poly1305"]},
+  {name:"3DES", type:"sim", typeLabel:"Simétrico", key:"168 bits (efectivos)", speed:25, speedLabel:"Lenta", security:"Obsoleto. Vulnerable a Sweet32. Desaprobado por NIST (2023).", uses:["Sistemas legacy","ATM","Tarjetas antiguas"]},
+  {name:"Blowfish", type:"sim", typeLabel:"Simétrico", key:"32–448 bits", speed:70, speedLabel:"Rápida", security:"Bloque de 64 bits → vulnerable a Sweet32. Reemplazado por Twofish/AES.", uses:["bcrypt","Sistemas legacy"]},
+  {name:"RSA", type:"asim", typeLabel:"Asimétrico", key:"2048 / 4096 bits", speed:15, speedLabel:"Lenta", security:"Seguro con ≥2048 bits. Vulnerable a computación cuántica (Shor).", uses:["Firmas digitales","TLS/SSL","PGP","Certificados X.509","Cifrado híbrido"]},
+  {name:"ECC", type:"asim", typeLabel:"Asimétrico", key:"256 bits (≈ RSA 3072)", speed:55, speedLabel:"Rápida", security:"Misma seguridad que RSA con claves 10× más cortas. Vulnerable a QC.", uses:["TLS 1.3 (ECDHE)","Firmas ECDSA/EdDSA","Blockchain","SSH"]},
+  {name:"Diffie-Hellman", type:"asim", typeLabel:"Asimétrico", key:"2048–4096 bits", speed:18, speedLabel:"Lenta", security:"Seguro con grupos grandes. Vulnerable a Logjam (DH exportado).", uses:["IKE/IPsec","TLS","Intercambio de claves"]},
+  {name:"DSA", type:"asim", typeLabel:"Asimétrico", key:"2048 bits", speed:20, speedLabel:"Lenta", security:"Superado por ECDSA/EdDSA. NIST permite hasta 2030.", uses:["Firma digital FIPS","Sistemas gubernamentales"]},
+  {name:"SHA-256", type:"hash", typeLabel:"Hash", key:"256 bits", speed:80, speedLabel:"Alta", security:"Estándar NIST. Resistente a colisiones. Familia SHA-2.", uses:["Blockchain","TLS","Firmas","Git","Integridad","Contraseñas (con salt)"]},
+  {name:"SHA-3 (Keccak)", type:"hash", typeLabel:"Hash", key:"224–512 bits", speed:60, speedLabel:"Moderada", security:"Estructura de esponja. Resistente a extensión de longitud. Post-cuántico favorable.", uses:["HMAC","Derivación de claves","Firmas"]},
+  {name:"MD5", type:"hash", typeLabel:"Hash", key:"128 bits", speed:95, speedLabel:"Muy alta", security:"Roto. Colisiones demostradas (2004). No usar para seguridad.", uses:["Checksums no criptográficos","Legacy"]},
+  {name:"BLAKE3", type:"hash", typeLabel:"Hash", key:"256 bits (configurable)", speed:98, speedLabel:"Extremadamente alta", security:"Paralelizable, SIMD, árbol Merkle. Más rápido que SHA-256 y SHA-3.", uses:["Hash archivos","Integridad","Derivación de claves","Alto rendimiento"]}
+];
+
+const TYPES = {sim:"Simétricos",asim:"Asimétricos",hash:"Hash"};
+
+function speedBar(speed){
+  let cls="bar-mid";
+  if(speed>=70) cls="bar-fast";
+  else if(speed<=30) cls="bar-slow";
+  return `<div class="bar-wrap"><div class="bar ${cls}" style="width:${speed}%"></div><span style="font-size:.7rem;color:#94a3b8">${speed}%</span></div>`;
+}
+
+function badge(type){
+  const m={sim:"b-sim",asim:"b-asim",hash:"b-hash"};
+  return `<span class="badge ${m[type]}">${TYPES[type]}</span>`;
+}
+
+function render(data){
+  const tbody=document.getElementById("tbody");
+  tbody.innerHTML=data.map(a=>`<tr class="fade-in">
+    <td>${a.name}</td>
+    <td>${badge(a.type)}</td>
+    <td style="font-size:.8rem;color:#94a3b8">${a.key}</td>
+    <td>${speedBar(a.speed)}<div style="font-size:.7rem;color:#64748b;margin-top:2px">${a.speedLabel}</div></td>
+    <td style="font-size:.8rem">${a.security}</td>
+    <td>${a.uses.map(u=>`<span class="tag">${u}</span>`).join("")}</td>
+  </tr>`).join("");
+  document.getElementById("countRow").textContent=`Mostrando ${data.length} de ${DATA.length} algoritmos`;
+}
+
+let currentFilter="all";
+let currentSort="";
+
+function filterAndSort(){
+  let d = currentFilter==="all" ? [...DATA] : DATA.filter(a=>a.type===currentFilter);
+  if(currentSort){
+    const [col,dir]=currentSort.split("-");
+    if(col==="name") d.sort((a,b)=>dir==="desc" ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
+    else if(col==="speed") d.sort((a,b)=>dir==="desc" ? b.speed-a.speed : a.speed-b.speed);
+    else if(col==="key") d.sort((a,b)=>b.key.length-a.key.length);
+  }
+  render(d);
+}
+
+document.querySelectorAll("[data-filter]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelector("[data-filter].active").classList.remove("active");
+    btn.classList.add("active");
+    currentFilter=btn.dataset.filter;
+    filterAndSort();
+  });
+});
+
+document.getElementById("sortSelect").addEventListener("change",function(){
+  currentSort=this.value;
+  filterAndSort();
+});
+
+document.querySelectorAll("thead th[data-col]").forEach(th=>{
+  th.addEventListener("click",()=>{
+    const col=th.dataset.col;
+    const sel=document.getElementById("sortSelect");
+    if(col==="name") sel.value=sel.value==="name" ? "" : "name";
+    else if(col==="speed") sel.value=sel.value==="speed-desc" ? "speed-asc" : "speed-desc";
+    else if(col==="key") sel.value=sel.value==="key" ? "" : "key";
+    else if(col==="type") sel.value=sel.value==="type" ? "" : "type";
+    currentSort=sel.value;
+    filterAndSort();
+  });
+});
+
+filterAndSort();
+</script>
+</body>
+</html>
