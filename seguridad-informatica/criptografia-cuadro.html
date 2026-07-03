@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criptografía — Cuadro Comparativo</title>
+<style>
+  :root {
+    --primary: #1E1B4B;
+    --secondary: #4338CA;
+    --accent: #6366F1;
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --text: #1E293B;
+    --muted: #64748B;
+    --border: #E2E8F0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    background: var(--card);
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    min-height: 100vh;
+  }
+  h1, h2, h3 { color: var(--primary); font-weight: 700; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  h2 {
+    font-size: 22px;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--secondary);
+  }
+  h3 { font-size: 16px; margin: 24px 0 12px; }
+
+  /* Portada */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    text-align: center;
+  }
+  .cover h1 { font-size: 36px; color: var(--primary); }
+  .cover .subtitle { font-size: 18px; color: var(--muted); margin-top: 8px; }
+  .cover .actividad { font-size: 20px; color: var(--secondary); margin-top: 32px; font-weight: 600; }
+  .cover .tema { font-size: 28px; color: var(--primary); margin-top: 8px; }
+  .cover .meta {
+    margin-top: 64px;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 2;
+  }
+  .cover hr { width: 120px; margin: 32px auto; border: 1px solid var(--accent); }
+
+  /* Índice */
+  .toc table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .toc td { padding: 8px 0; border-bottom: 1px dotted var(--border); }
+  .toc td:last-child { text-align: right; color: var(--muted); }
+  .toc tr:last-child td { border-bottom: none; }
+
+  /* Texto */
+  p { margin-bottom: 14px; text-align: justify; }
+  .indent { text-indent: 1.27cm; }
+
+  /* Tabla cuadro comparativo */
+  .comparativa {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .comparativa thead th {
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .comparativa tbody td {
+    padding: 10px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .comparativa tbody tr:nth-child(even) { background: #F1F5F9; }
+  .comparativa tbody tr:hover { background: #E0E7FF; }
+  .comparativa .categoria {
+    background: var(--secondary);
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .badge-sim { background: #DBEAFE; color: #1E40AF; }
+  .badge-asim { background: #FEE2E2; color: #991B1B; }
+  .badge-hash { background: #D1FAE5; color: #065F46; }
+
+  /* Referencias */
+  .refs { list-style: none; padding: 0; }
+  .refs li {
+    margin-bottom: 12px;
+    padding-left: 1.27cm;
+    text-indent: -1.27cm;
+    text-align: justify;
+    font-size: 14px;
+  }
+
+  .page-break { page-break-before: always; }
+  @media print {
+    .page { box-shadow: none; padding: 2cm; }
+    body { background: #fff; }
+  }
+
+  /* flecha volver arriba */
+  .btn-top {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 8px 16px;
+    background: var(--secondary);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .btn-top:hover { background: var(--primary); }
+
+</style>
+</head>
+<body>
+
+<div class="page" id="portada">
+  <div class="cover">
+    <h1>UNIVERSIDAD CIUDADANA</h1>
+    <p class="subtitle">Fundamentos de Seguridad Informática</p>
+    <hr>
+    <p class="actividad">Actividad Formativa 2</p>
+    <p class="tema">Cuadro Comparativo:<br>Algoritmos Criptográficos</p>
+    <div class="meta">
+      Alumno(a): ____________________________________<br>
+      Docente: ____________________________________<br>
+      Fecha: ____________________________________
+    </div>
+  </div>
+</div>
+
+<div class="page page-break" id="indice">
+  <h2>Índice</h2>
+  <div class="toc">
+    <table>
+      <tr><td><a href="#introduccion">Introducción</a></td><td>3</td></tr>
+      <tr><td><a href="#contenido">Contenido — Cuadro Comparativo</a></td><td>4</td></tr>
+      <tr><td><a href="#conclusion">Conclusión</a></td><td>6</td></tr>
+      <tr><td><a href="#bibliografia">Bibliografía</a></td><td>7</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page page-break" id="introduccion">
+  <h2>Introducción</h2>
+  <p class="indent">
+    La criptografía es una disciplina fundamental dentro de la seguridad informática que se encarga de proteger la información mediante técnicas de cifrado, garantizando la confidencialidad, integridad y autenticidad de los datos en entornos digitales. Su evolución ha permitido el desarrollo de algoritmos cada vez más robustos que se adaptan a las necesidades de comunicación y almacenamiento seguro de la información. En términos generales, los algoritmos criptográficos se clasifican en tres grandes categorías: simétricos, asimétricos y funciones hash. Los algoritmos simétricos utilizan una misma clave tanto para cifrar como para descifrar, lo que los hace extremadamente rápidos pero requiere un canal seguro para el intercambio de la clave. Por otro lado, los algoritmos asimétricos emplean un par de claves —una pública y una privada—, resolviendo el problema del intercambio de claves a costa de un mayor costo computacional. Las funciones hash, por su parte, generan una huella digital única de los datos sin posibilidad de revertir el proceso, siendo esenciales para la verificación de integridad. El presente cuadro comparativo analiza los algoritmos más representativos de cada categoría, contrastando su velocidad, nivel de seguridad y casos de uso típicos, con el objetivo de proporcionar una visión clara que facilite la selección del algoritmo adecuado según el contexto de aplicación.
+  </p>
+</div>
+
+<div class="page page-break" id="contenido">
+  <h2>Contenido — Cuadro Comparativo de Algoritmos Criptográficos</h2>
+
+  <h3>Algoritmos Simétricos</h3>
+  <table class="comparativa">
+    <thead>
+      <tr>
+        <th style="width:16%">Algoritmo</th>
+        <th style="width:12%">Tipo</th>
+        <th style="width:12%">Tamaño de clave</th>
+        <th style="width:16%">Velocidad</th>
+        <th style="width:20%">Seguridad</th>
+        <th style="width:24%">Casos de uso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>AES</strong> (Rijndael)</td>
+        <td><span class="badge badge-sim">Simétrico</span></td>
+        <td>128 / 192 / 256 bits</td>
+        <td>Muy alta (hardware acelerado en CPUs modernas)</td>
+        <td>Estándar actual (NIST). Resistente a criptoanálisis conocido</td>
+        <td>Cifrado de discos (BitLocker, LUKS), VPN (IPsec), TLS, Wi-Fi (WPA2/3), AES-NI</td>
+      </tr>
+      <tr>
+        <td><strong>ChaCha20</strong></td>
+        <td><span class="badge badge-sim">Simétrico</span></td>
+        <td>256 bits</td>
+        <td>Muy alta (superior a AES en software sin aceleración HW)</td>
+        <td>Diseño moderno, resistente a ataques de temporización. Alternativa a AES</td>
+        <td>TLS 1.3 (ChaCha20-Poly1305), Signal, WireGuard, OpenSSH, móviles sin AES-NI</td>
+      </tr>
+      <tr>
+        <td><strong>3DES</strong> (Triple DES)</td>
+        <td><span class="badge badge-sim">Simétrico</span></td>
+        <td>168 bits (efectivos)</td>
+        <td>Lenta (3 pasadas de DES)</td>
+        <td><strong>Obsoleto.</strong> Vulnerable a ataques de encuentro a la mitad (Sweet32). NIST lo desaprobó en 2023</td>
+        <td>Solo en sistemas legacy (ATM, tarjetas de crédito antiguas). No recomendado</td>
+      </tr>
+      <tr>
+        <td><strong>Blowfish</strong></td>
+        <td><span class="badge badge-sim">Simétrico</span></td>
+        <td>32 – 448 bits</td>
+        <td>Rápida (optimizada para 32 bits)</td>
+        <td>Adecuado, pero su tamaño de bloque de 64 bits lo hace vulnerable a ataques de cumpleaños (Sweet32)</td>
+        <td>Sistemas legacy, bcrypt (derivación de clave). Reemplazado por Twofish/AES</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Algoritmos Asimétricos</h3>
+  <table class="comparativa">
+    <thead>
+      <tr>
+        <th style="width:16%">Algoritmo</th>
+        <th style="width:12%">Tipo</th>
+        <th style="width:12%">Tamaño de clave</th>
+        <th style="width:16%">Velocidad</th>
+        <th style="width:20%">Seguridad</th>
+        <th style="width:24%">Casos de uso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>RSA</strong></td>
+        <td><span class="badge badge-asim">Asimétrico</span></td>
+        <td>2048 / 4096 bits</td>
+        <td>Lenta (operaciones modulares exponenciales)</td>
+        <td>Seguro con tamaños ≥ 2048 bits. Vulnerable a computación cuántica (Shor)</td>
+        <td>Firmas digitales, TLS/SSL, cifrado híbrido (clave de sesión), PGP, certificados X.509</td>
+      </tr>
+      <tr>
+        <td><strong>ECC</strong> (Curva Elíptica)</td>
+        <td><span class="badge badge-asim">Asimétrico</span></td>
+        <td>256 bits (∼ RSA 3072)</td>
+        <td>Rápida (claves más cortas, mismo nivel de seguridad)</td>
+        <td>Equivalente a RSA con claves mucho menores. Vulnerable a computación cuántica</td>
+        <td>TLS 1.3 (ECDHE), firmas (ECDSA, EdDSA), Bitcoin/Blockchain, SSH, autenticación moderna</td>
+      </tr>
+      <tr>
+        <td><strong>Diffie-Hellman</strong> (DH)</td>
+        <td><span class="badge badge-asim">Asimétrico</span></td>
+        <td>2048 – 4096 bits</td>
+        <td>Lenta (exponenciación modular)</td>
+        <td>Seguro con grupos grandes. Vulnerable a ataques Logjam (DH exportado). Post-cuántico: frágil</td>
+        <td>Intercambio seguro de claves (IKE/IPsec, TLS), Protocolo de acuerdo de claves</td>
+      </tr>
+      <tr>
+        <td><strong>DSA</strong> (Digital Signature Algorithm)</td>
+        <td><span class="badge badge-asim">Asimétrico</span></td>
+        <td>2048 bits</td>
+        <td>Lenta (firma más rápida que RSA, verificación más lenta)</td>
+        <td>Adecuado, pero superado por ECDSA/EdDSA. NIST permite su uso hasta 2030</td>
+        <td>Firmas digitales gubernamentales (estándar FIPS). En desuso en favor de ECDSA</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Funciones Hash</h3>
+  <table class="comparativa">
+    <thead>
+      <tr>
+        <th style="width:16%">Algoritmo</th>
+        <th style="width:12%">Tipo</th>
+        <th style="width:12%">Tamaño de salida</th>
+        <th style="width:16%">Velocidad</th>
+        <th style="width:20%">Seguridad</th>
+        <th style="width:24%">Casos de uso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>SHA-256</strong></td>
+        <td><span class="badge badge-hash">Hash</span></td>
+        <td>256 bits</td>
+        <td>Alta</td>
+        <td>Estándar actual. Resistente a colisiones. Familia SHA-2 aprobada por NIST</td>
+        <td>Blockchain (Bitcoin), TLS, firmas digitales, integridad de archivos, contraseñas (con salt), Git</td>
+      </tr>
+      <tr>
+        <td><strong>SHA-3</strong> (Keccak)</td>
+        <td><span class="badge badge-hash">Hash</span></td>
+        <td>224 / 256 / 384 / 512 bits</td>
+        <td>Moderada (estructura de esponja, más lenta que SHA-2 en software)</td>
+        <td>Diseño radicalmente distinto a SHA-2. Resistente a extensión de longitud. Post-cuántico: favorable</td>
+        <td>Firmas digitales, HMAC, derivación de claves, aplicaciones que requieren diversidad algorítmica</td>
+      </tr>
+      <tr>
+        <td><strong>MD5</strong></td>
+        <td><span class="badge badge-hash">Hash</span></td>
+        <td>128 bits</td>
+        <td>Muy alta</td>
+        <td><strong>Roto.</strong> Colisiones demostradas (2004). No debe usarse para seguridad</td>
+        <td>Checksums no criptográficos, sistemas legacy. No usar para contraseñas ni firmas</td>
+      </tr>
+      <tr>
+        <td><strong>BLAKE3</strong></td>
+        <td><span class="badge badge-hash">Hash</span></td>
+        <td>256 bits (configurable)</td>
+        <td>Extremadamente alta (paralelizable, SIMD, árbol Merkle)</td>
+        <td>Diseño moderno. Resistente a colisiones y preimagen. Más rápido que SHA-256 y SHA-3</td>
+        <td>Hash de archivos, integridad, derivación de claves, aplicaciones de alto rendimiento</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="page page-break" id="conclusion">
+  <h2>Conclusión</h2>
+  <p class="indent">
+    La elaboración de este cuadro comparativo permitió analizar de manera estructurada los principales algoritmos criptográficos utilizados en la actualidad, evidenciando que no existe una solución única para todos los escenarios de seguridad. Los algoritmos simétricos como AES y ChaCha20 ofrecen un excelente rendimiento para el cifrado masivo de datos, siendo ideales para proteger información en reposo y en tránsito cuando el intercambio de claves se resuelve mediante mecanismos asimétricos. Por su parte, los algoritmos asimétricos como RSA y ECC resuelven el problema fundamental de la distribución de claves y habilitan las firmas digitales y la autenticación, aunque su costo computacional los hace poco prácticos para cifrar grandes volúmenes de información directamente. Se observa una clara tendencia hacia algoritmos más eficientes y resistentes: ChaCha20 desplaza a AES en entornos sin aceleración hardware, ECC reemplaza progresivamente a RSA por su relación seguridad-eficiencia, y BLAKE3 emerge como el hash más rápido disponible. Asimismo, resulta evidente que algoritmos como MD5, 3DES y DSA deben ser evitados por sus vulnerabilidades conocidas. La principal lección es que la criptografía moderna se construye combinando estratégicamente ambos tipos de algoritmos —cifrado híbrido—, aprovechando la velocidad de los simétricos y la conveniencia de los asimétricos. De cara al futuro, la computación cuántica representa una amenaza existencial para RSA y ECC, lo que impulsa el desarrollo de la criptografía post-cuántica (CRYSTALS-Kyber, Dilithium) como siguiente frontera. Comprender estas diferencias resulta esencial para cualquier profesional de seguridad informática al momento de diseñar sistemas seguros y tomar decisiones informadas sobre qué algoritmo implementar según el contexto y los recursos disponibles.
+  </p>
+</div>
+
+<div class="page page-break" id="bibliografia">
+  <h2>Referencias</h2>
+  <ul class="refs">
+    <li>Barker, E. (2020). <em>Recommendation for key management: Part 1 – General</em> (NIST SP 800-57 Part 1 Rev. 5). National Institute of Standards and Technology. <a href="https://doi.org/10.6028/NIST.SP.800-57pt1r5" target="_blank">https://doi.org/10.6028/NIST.SP.800-57pt1r5</a></li>
+    <li>Bernstein, D. J. (2008). ChaCha, a variant of Salsa20. <em>Workshop Record of SASC 2008</em>. <a href="https://cr.yp.to/chacha/chacha-20080128.pdf" target="_blank">https://cr.yp.to/chacha/chacha-20080128.pdf</a></li>
+    <li>Bernstein, D. J., Lange, T., & Schwabe, P. (2021). The security impact of a new cryptographic library. <em>IACR Cryptology ePrint Archive</em>, 2021/1381. <a href="https://eprint.iacr.org/2021/1381" target="_blank">https://eprint.iacr.org/2021/1381</a></li>
+    <li>Daemen, J. & Rijmen, V. (2002). <em>The design of Rijndael: AES — The Advanced Encryption Standard</em>. Springer.</li>
+    <li>Dang, Q. (2015). <em>Recommendation for applications using approved hash algorithms</em> (NIST SP 800-107 Rev. 1). National Institute of Standards and Technology. <a href="https://doi.org/10.6028/NIST.SP.800-107r1" target="_blank">https://doi.org/10.6028/NIST.SP.800-107r1</a></li>
+    <li>Diffie, W. & Hellman, M. (1976). New directions in cryptography. <em>IEEE Transactions on Information Theory</em>, 22(6), 644–654. <a href="https://doi.org/10.1109/TIT.1976.1055638" target="_blank">https://doi.org/10.1109/TIT.1976.1055638</a></li>
+    <li>Krawczyk, H. (2005). The order of encryption and authentication for protecting communications (or: How secure is SSL?). <em>Advances in Cryptology – CRYPTO 2005</em>, 310–331. <a href="https://doi.org/10.1007/11535218_19" target="_blank">https://doi.org/10.1007/11535218_19</a></li>
+    <li>National Institute of Standards and Technology. (2001). <em>Advanced Encryption Standard (AES)</em> (FIPS PUB 197). <a href="https://doi.org/10.6028/NIST.FIPS.197" target="_blank">https://doi.org/10.6028/NIST.FIPS.197</a></li>
+    <li>National Institute of Standards and Technology. (2013). <em>Digital Signature Standard (DSS)</em> (FIPS PUB 186-4). <a href="https://doi.org/10.6028/NIST.FIPS.186-4" target="_blank">https://doi.org/10.6028/NIST.FIPS.186-4</a></li>
+    <li>National Institute of Standards and Technology. (2015). <em>SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions</em> (FIPS PUB 202). <a href="https://doi.org/10.6028/NIST.FIPS.202" target="_blank">https://doi.org/10.6028/NIST.FIPS.202</a></li>
+    <li>Paar, C. & Pelzl, J. (2010). <em>Understanding cryptography: A textbook for students and practitioners</em>. Springer.</li>
+    <li>Stallings, W. (2017). <em>Cryptography and network security: Principles and practice</em> (8.ª ed.). Pearson.</li>
+    <li>Stevens, M., Bursztein, E., Karpman, P., Albertini, A., & Markov, Y. (2017). The first collision for full SHA-1. <em>Advances in Cryptology – CRYPTO 2017</em>, 570–596. <a href="https://doi.org/10.1007/978-3-319-63688-7_19" target="_blank">https://doi.org/10.1007/978-3-319-63688-7_19</a></li>
+  </ul>
+
+  <a href="#portada" class="btn-top">↑ Volver al inicio</a>
+</div>
+
+</body>
+</html>
