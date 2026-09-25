@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Glosario Interactivo · Sistemas Cliente-Servidor</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fafafa; color: #1f2937; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.55; padding: 36px 16px 56px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 28px; }
+  .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #4338ca; background: #eef2ff; padding: 6px 12px; border-radius: 999px; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; letter-spacing: -0.02em; color: #312e81; margin-bottom: 6px; }
+  .sub { font-size: 14px; color: #6b7280; max-width: 640px; margin: 0 auto; }
+
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 28px; box-shadow: 0 4px 24px -10px rgba(15, 23, 42, 0.06); margin-bottom: 22px; }
+  .card h2 { font-size: 15px; color: #312e81; margin-bottom: 14px; text-align: center; }
+
+  .diagram { position: relative; width: 100%; max-width: 980px; margin: 0 auto; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+
+  .hotspot {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #4f46e5; color: #fff; border: 2px solid #fff;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(67,56,202,0.45);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s ease, background .15s ease;
+    z-index: 2;
+  }
+  .hotspot:hover, .hotspot:focus-visible { background: #312e81; transform: translate(-50%, -50%) scale(1.18); outline: none; }
+  .hotspot.active { background: #16a34a; }
+
+  .panel {
+    margin-top: 18px; background: #eef2ff; border: 1px solid #c7d2fe;
+    border-radius: 14px; padding: 20px 22px; min-height: 92px;
+  }
+  .panel .term { font-size: 16px; font-weight: 800; color: #312e81; margin-bottom: 6px; }
+  .panel .def { font-size: 14px; color: #374151; }
+  .panel .placeholder { font-size: 13px; color: #9ca3af; font-style: italic; }
+
+  .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-top: 18px; }
+  .legend button {
+    text-align: left; font-size: 12.5px; color: #374151; background: #fff;
+    border: 1px solid #e5e7eb; border-radius: 10px; padding: 9px 11px;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+  }
+  .legend button:hover { border-color: #a5b4fc; background: #eef2ff; }
+  .legend button .n { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: #4f46e5; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .legend button.active { border-color: #16a34a; background: #f0fdf4; }
+  .legend button.active .n { background: #16a34a; }
+
+  .tip { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 10px; font-style: italic; }
+  footer { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 22px; }
+
+  @media (max-width: 640px) {
+    .card { padding: 18px; }
+    .hotspot { width: 24px; height: 24px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Sistemas Cliente-Servidor · Actividad Formativa 1</span>
+    <h1>Glosario Interactivo</h1>
+    <p class="sub">Haz clic en cada punto numerado del diagrama (o en la lista de abajo) para ver la definición del concepto.</p>
+  </header>
+
+  <div class="card">
+    <h2>Arquitectura Cliente&nbsp;&ndash;&nbsp;Red&nbsp;&ndash;&nbsp;Servidor</h2>
+
+    <div class="diagram" id="diagram">
+      <svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#6366f1"/>
+          </marker>
+        </defs>
+        <!-- Cliente box -->
+        <rect x="40" y="140" width="300" height="280" rx="18" fill="#eef2ff" stroke="#818cf8" stroke-width="2"/>
+        <text x="190" y="112" text-anchor="middle" font-size="22" font-weight="800" fill="#312e81">CLIENTE</text>
+        <rect x="70" y="230" width="240" height="60" rx="10" fill="#fff" stroke="#a5b4fc"/>
+        <text x="190" y="265" text-anchor="middle" font-size="15" fill="#3730a3">Cliente fino</text>
+        <rect x="70" y="320" width="240" height="60" rx="10" fill="#fff" stroke="#a5b4fc"/>
+        <text x="190" y="355" text-anchor="middle" font-size="15" fill="#3730a3">Cliente grueso</text>
+
+        <!-- Red box -->
+        <rect x="430" y="60" width="340" height="440" rx="18" fill="#f5f3ff" stroke="#a78bfa" stroke-width="2" stroke-dasharray="6 5"/>
+        <text x="600" y="112" text-anchor="middle" font-size="22" font-weight="800" fill="#5b21b6">RED</text>
+
+        <!-- Servidor box -->
+        <rect x="860" y="140" width="300" height="280" rx="18" fill="#ecfdf5" stroke="#34d399" stroke-width="2"/>
+        <text x="1010" y="112" text-anchor="middle" font-size="22" font-weight="800" fill="#065f46">SERVIDOR</text>
+        <rect x="890" y="230" width="240" height="60" rx="10" fill="#fff" stroke="#6ee7b7"/>
+        <text x="1010" y="265" text-anchor="middle" font-size="15" fill="#047857">Servidor dedicado</text>
+        <rect x="890" y="320" width="240" height="60" rx="10" fill="#fff" stroke="#6ee7b7"/>
+        <text x="1010" y="355" text-anchor="middle" font-size="15" fill="#047857">Servidor compartido</text>
+
+        <!-- arrows -->
+        <line x1="345" y1="230" x2="425" y2="230" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow)"/>
+        <text x="385" y="215" text-anchor="middle" font-size="12" fill="#4338ca">solicitud</text>
+        <line x1="425" y1="330" x2="345" y2="330" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow)"/>
+        <text x="385" y="352" text-anchor="middle" font-size="12" fill="#4338ca">respuesta</text>
+
+        <line x1="775" y1="230" x2="855" y2="230" stroke="#10b981" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="855" y1="330" x2="775" y2="330" stroke="#10b981" stroke-width="3" marker-end="url(#arrow)"/>
+      </svg>
+
+      <!-- hotspots (percent-based positions over the SVG box) -->
+      <button class="hotspot" style="left:15.8%; top:24%"  data-id="cliente">1</button>
+      <button class="hotspot" style="left:24.2%; top:46.5%" data-id="cliente_fino">2</button>
+      <button class="hotspot" style="left:24.2%; top:63.5%" data-id="cliente_grueso">3</button>
+      <button class="hotspot" style="left:32%; top:50%"    data-id="solicitud_respuesta">4</button>
+      <button class="hotspot" style="left:50%; top:11%"    data-id="red">5</button>
+      <button class="hotspot" style="left:50%; top:47%"    data-id="latencia">6</button>
+      <button class="hotspot" style="left:50%; top:70%"    data-id="throughput">7</button>
+      <button class="hotspot" style="left:68%; top:50%"    data-id="middleware">8</button>
+      <button class="hotspot" style="left:84.2%; top:24%"  data-id="servidor">9</button>
+      <button class="hotspot" style="left:75.8%; top:46.5%" data-id="servidor_dedicado">10</button>
+      <button class="hotspot" style="left:75.8%; top:63.5%" data-id="servidor_compartido">11</button>
+      <button class="hotspot" style="left:60%; top:93%"    data-id="disponibilidad">12</button>
+      <button class="hotspot" style="left:40%; top:93%"    data-id="escalabilidad">13</button>
+    </div>
+
+    <div class="panel" id="panel">
+      <p class="placeholder">Selecciona un punto numerado o un término de la lista para ver su definición aquí.</p>
+    </div>
+
+    <div class="legend" id="legend"></div>
+    <p class="tip">13 conceptos · haz clic para explorarlos</p>
+  </div>
+
+  <footer>Sistemas Cliente-Servidor (A) 2026-3 · Actividad Formativa 1 · Glosario interactivo</footer>
+</div>
+
+<script>
+const TERMS = {
+  cliente: ["Cliente", "Programa o dispositivo que solicita un servicio o recurso a otro equipo (el servidor) a través de una red, iniciando la comunicación."],
+  cliente_fino: ["Cliente fino (thin client)", "Cliente con poca capacidad de procesamiento propio; delega casi todo el trabajo (lógica y datos) al servidor, típico en apps web."],
+  cliente_grueso: ["Cliente grueso (thick client)", "Cliente con mayor capacidad de procesamiento local; ejecuta parte importante de la lógica de la aplicación en el propio equipo y solo consulta al servidor cuando es necesario."],
+  solicitud_respuesta: ["Solicitud / Respuesta", "Patrón de comunicación base del modelo cliente-servidor: el cliente envía una solicitud (request) y el servidor procesa y regresa una respuesta (response)."],
+  red: ["Red", "Infraestructura de comunicación (cableada o inalámbrica) que conecta clientes y servidores, permitiendo el intercambio de datos entre ellos."],
+  latencia: ["Latencia", "Tiempo que tarda un dato en viajar del cliente al servidor (o viceversa); a menor latencia, respuesta más rápida percibida por el usuario."],
+  throughput: ["Throughput", "Cantidad de datos o solicitudes que un sistema puede procesar por unidad de tiempo; mide la capacidad real de trabajo del servidor o la red."],
+  middleware: ["Middleware", "Software intermedio que conecta y facilita la comunicación entre el cliente y el servidor (o entre distintos sistemas), gestionando datos, autenticación u otras tareas comunes."],
+  servidor: ["Servidor", "Programa o equipo que espera solicitudes, procesa la petición del cliente y devuelve una respuesta; puede atender a uno o muchos clientes a la vez."],
+  servidor_dedicado: ["Servidor dedicado", "Servidor físico o virtual reservado exclusivamente para un cliente/aplicación, sin compartir sus recursos con otros usuarios."],
+  servidor_compartido: ["Servidor compartido", "Servidor cuyos recursos (procesamiento, almacenamiento) son utilizados simultáneamente por múltiples clientes o aplicaciones."],
+  disponibilidad: ["Disponibilidad", "Proporción de tiempo en que un servicio está accesible y funcionando correctamente para los clientes que lo solicitan."],
+  escalabilidad: ["Escalabilidad", "Capacidad de un sistema cliente-servidor de crecer (agregar más usuarios, carga o recursos) sin degradar su desempeño de forma significativa."]
+};
+
+const panel = document.getElementById('panel');
+const legend = document.getElementById('legend');
+const hotspots = document.querySelectorAll('.hotspot');
+
+function buildLegend() {
+  let i = 1;
+  for (const id in TERMS) {
+    const [term] = TERMS[id];
+    const btn = document.createElement('button');
+    btn.dataset.id = id;
+    btn.innerHTML = '<span class="n">' + i + '</span><span>' + term + '</span>';
+    btn.addEventListener('click', () => select(id));
+    legend.appendChild(btn);
+    i++;
+  }
+}
+
+function select(id) {
+  const [term, def] = TERMS[id];
+  panel.innerHTML = '<div class="term">' + term + '</div><div class="def">' + def + '</div>';
+  hotspots.forEach(h => h.classList.toggle('active', h.dataset.id === id));
+  legend.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+}
+
+hotspots.forEach(h => h.addEventListener('click', () => select(h.dataset.id)));
+buildLegend();
+</script>
+</body>
+</html>
