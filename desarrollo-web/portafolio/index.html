@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio web interactivo de Luis de Carlos Rendón Salas, estudiante de Ingeniería en Desarrollo de Software.">
+  <title>Portafolio | Luis de Carlos Rendón Salas</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#inicio">LCRS</a>
+    <nav aria-label="Principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button id="theme-toggle" type="button" aria-pressed="false">Modo oscuro</button>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <h1>Hola, soy Luis de Carlos Rendón Salas</h1>
+      <p>Estudiante de Ingeniería en Desarrollo de Software en la Universidad Ciudadana de Nuevo León. Me interesa construir sitios y aplicaciones web claros, accesibles y bien organizados.</p>
+      <a class="btn" href="#proyectos">Ver mis proyectos</a>
+      <p class="visits" id="visit-counter" aria-live="polite"></p>
+    </section>
+
+    <section id="sobre-mi" class="section">
+      <h2>Sobre mí</h2>
+      <article class="about">
+        <figure>
+          <img src="img/perfil.svg" alt="Avatar ilustrado del autor del portafolio" width="200" height="200">
+          <figcaption>Luis de Carlos Rendón Salas, estudiante de IDS.</figcaption>
+        </figure>
+        <div>
+          <p>Curso la licenciatura en Ingeniería en Desarrollo de Software y trabajo con HTML5, CSS3 y JavaScript, además de bases de datos, redes y estadística aplicada. Prefiero aprender construyendo: cada materia la convierto en un pequeño proyecto que pueda probar y mejorar.</p>
+          <ul class="skills">
+            <li>HTML5 semántico</li><li>CSS3 responsivo</li><li>JavaScript (DOM)</li><li>Git y GitHub</li><li>Python</li>
+          </ul>
+          <address>
+            Universidad Ciudadana de Nuevo León<br>
+            Monterrey, Nuevo León, México<br>
+            <a href="mailto:contacto@ejemplo.com">contacto@ejemplo.com</a>
+          </address>
+        </div>
+      </article>
+    </section>
+
+    <section id="proyectos" class="section">
+      <h2>Proyectos</h2>
+      <div class="projects">
+        <article class="project">
+          <h3>Landing adaptable NubeCódigo</h3>
+          <p>Página con Flexbox, CSS Grid y tres breakpoints que se adapta a móvil, tableta y escritorio.</p>
+          <span class="tag">HTML · CSS</span>
+        </article>
+        <article class="project">
+          <h3>Análisis de hábitos de estudio</h3>
+          <p>Pruebas de hipótesis (t, proporciones, chi-cuadrada) aplicadas a datos de rendimiento académico.</p>
+          <span class="tag">Estadística · Python</span>
+        </article>
+        <article class="project">
+          <h3>Modelo de optimización</h3>
+          <p>Formulación y solución de un problema de programación lineal para asignar recursos.</p>
+          <span class="tag">Investigación de operaciones</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="contacto" class="section">
+      <h2>Contacto</h2>
+      <form id="contact-form" novalidate>
+        <div class="field">
+          <label for="nombre">Nombre completo</label>
+          <input id="nombre" name="nombre" type="text" required minlength="3" maxlength="60" autocomplete="name">
+          <small class="error" id="err-nombre" aria-live="polite"></small>
+        </div>
+        <div class="field">
+          <label for="correo">Correo electrónico</label>
+          <input id="correo" name="correo" type="email" required placeholder="contacto@ejemplo.com" autocomplete="email">
+          <small class="error" id="err-correo" aria-live="polite"></small>
+        </div>
+        <div class="field">
+          <label for="mensaje">Mensaje (mínimo 20 caracteres)</label>
+          <textarea id="mensaje" name="mensaje" rows="5" required minlength="20" maxlength="500"></textarea>
+          <small class="error" id="err-mensaje" aria-live="polite"></small>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn">Enviar mensaje</button>
+          <button type="button" id="clear-draft" class="btn secondary">Borrar borrador</button>
+        </div>
+        <p id="form-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Luis de Carlos Rendón Salas. Proyecto integrador de Desarrollo Web.</p>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
